@@ -19,6 +19,65 @@ const getUserTransactions = async (user_id) => {
   return rows;
 };
 
+const updateUserTransactions = async (
+  user_id,
+  transaction_id,
+  wallet_id,
+  category_id,
+  amount,
+  description,
+  transaction_date,
+  type
+) => {
+  let connection;
+  try {
+    connection = await db.getConnection();
+    await connection.beginTransaction();
+    const [result] = await connection.query(
+      `UPDATE 
+      transactions SET wallet_id = ?, 
+      category_id = ?, 
+      amount = ?, 
+      description = ?, 
+      transaction_date = ?, 
+      type = ?
+      WHERE user_id = ? AND id = ?`,
+      [
+        wallet_id,
+        category_id,
+        amount,
+        description,
+        transaction_date,
+        type,
+        user_id,
+        transaction_id,
+      ]
+    );
+
+    if (result.affectedRows === 0) {
+      return null;
+    }
+
+    const [updateTransaction] = await connection.query(
+      "SELECT * FROM transactions WHERE id = ?",
+      [result.insertId]
+    );
+
+    await connection.commit();
+    return updateTransaction[0];
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+    }
+    console.error("Error update transaction:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+};
+
 const getTransactionDetails = async (user_id, transaction_id) => {
   const [rows] = await db.query(
     `
@@ -87,6 +146,7 @@ const deleteUserTransaction = async (user_id, transaction_id) => {
 module.exports = {
   getUserTransactions,
   getTransactionDetails,
+  updateUserTransactions,
   addTransaction,
   deleteUserTransaction,
 };

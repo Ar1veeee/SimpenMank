@@ -18,7 +18,7 @@ Aplikasi **SimpenMank** adalah alat untuk membantu pengguna melacak pengeluaran 
 - **Backend**: Node.js with Express
 - **Database**: MySQL
 - **Hosting**: Cloud Run
-- **Autentikasi**: OAuth 2.0 / JWT / ACCOUNT
+- **Autentikasi**: OAuth 2.0 / JWT / Akun
 
 ---
 
@@ -63,9 +63,12 @@ Aplikasi **SimpenMank** adalah alat untuk membantu pengguna melacak pengeluaran 
 | `/profile/:user_id`                     | GET    | Menampilkan Informasi Pengguna         |
 | `/profile/:user_id/password`            | PATCH  | Mengubah Password Pengguna             |
 | `/transaction/:user_id`                 | GET    | Menampilkan Transaksi Pengguna         |
-| `/transaction/:user_id/income`          | POST   | Menambahkan income transaksi baru      |
-| `/transaction/:user_id/expense`         | POST   | Menambahkan expense transaksi baru     |
-| `/transaction/:user_id/:transaction_id` | DELETE | Menghapus transaksi                    |
+| `/transaction/:user_id/:transaction_id` | GET | Menampilkan Detail Transaksi                    |
+| `/transaction/:user_id/income`          | POST   | Menambahkan Transaksi Pemasukan Baru      |
+| `/transaction/:user_id/expense`         | POST   | Menambahkan Transaksi Pengeluaran Baru     |
+| `/transaction/:user_id/:transaction_id/income` | PUT | Mengubah detail Transaksi Pemasukan                    |
+| `/transaction/:user_id/:transaction_id/expense` | PUT | Mengubah detail Transaksi Pengeluaran                   |
+| `/transaction/:user_id/:transaction_id` | DELETE | Menghapus Transaksi                    |
 | `/wallet/:user_id`                      | GET    | Menampilkan Dompet Pengguna            |
 | `/wallet/:user_id`                      | POST   | Menambahkan Dompet Pengguna            |
 | `/category/:user_id/:type`              | GET    | Menambahkan Dompet Pengguna            |
@@ -85,7 +88,7 @@ Kami sangat menyambut kontribusi dari komunitas! Jika Anda ingin menyumbangkan k
 ---
 
 ## Pengembang
-Alief Arifin Mahardiko ([Ar1veeee](https://github.com/Ar1veeee))
+[Alief Arifin Mahardiko](https://github.com/Ar1veeee)
 
 ---
 
