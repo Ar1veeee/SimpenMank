@@ -1,11 +1,13 @@
 const {
   getUserTransactions,
+  getTransactionDetails,
   addTransaction,
   deleteUserTransaction,
 } = require("../models/transactionModel");
 const { getCategoryIdByName } = require("../models/categoryModel");
 const { getWalletIdByName } = require("../models/walletModel");
 const { findUserById } = require("../models/usersModel");
+const { use } = require("passport");
 
 const Transactions = async (req, res) => {
   const { user_id } = req.params;
@@ -24,6 +26,24 @@ const Transactions = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+const TransactionDetails = async (req, res) => {
+  const {user_id, transaction_id} = req.params;
+  if (!user_id || !transaction_id) {
+    return res.status(400).json({message: "Missing required fields"})
+  }
+  try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User ID not found" });
+    }
+    const transactionDetail = await getTransactionDetails(user_id, transaction_id);
+    res.status(200).json({transactionDetail});
+  } catch (error) {
+    console.error("Error fetching transaction detail:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+} 
 
 const handleTransaction = async (req, res, type) => {
   const { user_id } = req.params;
@@ -106,6 +126,7 @@ const deleteTransaction = async (req, res) => {
 
 module.exports = {
   Transactions,
+  TransactionDetails,
   IncomeTransaction,
   ExpenseTransaction,
   deleteTransaction,

@@ -19,6 +19,16 @@ const getUserTransactions = async (user_id) => {
   return rows;
 };
 
+const getTransactionDetails = async (user_id, transaction_id) => {
+  const [rows] = await db.query(
+    `
+    SELECT * FROM transactions WHERE user_id = ? AND id = ?
+    `,
+    [user_id, transaction_id]
+  );
+  return rows;
+};
+
 const addTransaction = async (
   user_id,
   wallet_id,
@@ -76,6 +86,7 @@ const deleteUserTransaction = async (user_id, transaction_id) => {
 
 module.exports = {
   getUserTransactions,
+  getTransactionDetails,
   addTransaction,
   deleteUserTransaction,
 };
