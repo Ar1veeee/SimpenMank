@@ -26,9 +26,19 @@ const login = async (req, res) => {
 
 const validatePassword = (password) => {
   const validations = [
-    { regex: /^(?=.*[A-Z]).{7,}$/, message: "Password must be at least 8 characters and include an uppercase letter." },
-    { regex: /^(?=.*\d)/, message: "Password must contain at least one number." },
-    { regex: /^(?=.*[!@#$%^&*(),.?":{}|<>])/, message: "Password must contain at least one special character." },
+    {
+      regex: /^(?=.*[A-Z]).{7,}$/,
+      message:
+        "Password must be at least 8 characters and include an uppercase letter.",
+    },
+    {
+      regex: /^(?=.*\d)/,
+      message: "Password must contain at least one number.",
+    },
+    {
+      regex: /^(?=.*[!@#$%^&*(),.?":{}|<>])/,
+      message: "Password must contain at least one special character.",
+    },
   ];
 
   for (const { regex, message } of validations) {

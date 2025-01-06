@@ -1,10 +1,23 @@
 const db = require("../config/db");
 
-const getListWallet = async (user_id) => {
+const getUserWallet = async (user_id) => {
   try {
     const [rows] = await db.query("SELECT * FROM wallets WHERE user_id = ?", [
       user_id,
     ]);
+    return rows;
+  } catch (error) {
+    console.error("Error fetching wallet list:", error);
+    throw error;
+  }
+};
+
+const getDefaultWallet = async (user_id) => {
+  try {
+    const [rows] = await db.query(
+      "SELECT * FROM wallets WHERE user_id IS NULL",
+      [user_id]
+    );
     return rows;
   } catch (error) {
     console.error("Error fetching wallet list:", error);
@@ -43,10 +56,9 @@ const addWallet = async (user_id, name, balance) => {
 
 const getWalletIdByName = async (wallet_name) => {
   try {
-    const [rows] = await db.query(
-      "SELECT id FROM wallets WHERE name = ?",
-      [wallet_name]
-    );
+    const [rows] = await db.query("SELECT id FROM wallets WHERE name = ?", [
+      wallet_name,
+    ]);
     return rows.length > 0 ? rows[0].id : null;
   } catch (error) {
     console.error("Error fetching wallet ID by name:", error);
@@ -54,4 +66,9 @@ const getWalletIdByName = async (wallet_name) => {
   }
 };
 
-module.exports = { getListWallet, addWallet, getWalletIdByName };
+module.exports = {
+  getUserWallet,
+  getDefaultWallet,
+  addWallet,
+  getWalletIdByName,
+};

@@ -1,8 +1,6 @@
-// Import only necessary methods from bcrypt
 const { hash } = require("bcrypt");
 const db = require("../config/db");
 
-// Use constant variables for queries to improve readability and reusability
 const QUERY_FIND_USER_BY_GOOGLE_ID = "SELECT * FROM users WHERE google_id = ?";
 const QUERY_INSERT_USER =
   "INSERT INTO users (google_id, username, email, auth_method) VALUES (?, ?, ?, ?)";

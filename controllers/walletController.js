@@ -1,4 +1,8 @@
-const { getListWallet, addWallet } = require("../models/walletModel");
+const {
+  getUserWallet,
+  getDefaultWallet,
+  addWallet,
+} = require("../models/walletModel");
 const { findUserById } = require("../models/usersModel");
 
 const showWallet = async (req, res) => {
@@ -10,9 +14,10 @@ const showWallet = async (req, res) => {
   }
 
   try {
-    const [user, wallets] = await Promise.all([
-      findUserById(user_id),
-      getListWallet(user_id),
+    const user = await findUserById(user_id);
+    const wallets = await Promise.all([
+      getUserWallet(user_id),
+      getDefaultWallet(),
     ]);
 
     if (!user) {

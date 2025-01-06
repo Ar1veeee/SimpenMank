@@ -8,7 +8,7 @@ const addCategory = async (user_id, name, type) => {
 
     const [result] = await connection.query(
       "INSERT INTO categories (user_id, name, type) VALUES (?, ?, ?)",
-      [user_id, name, type] // pastikan 'type' diteruskan dengan benar
+      [user_id, name, type]
     );
 
     const [newCategory] = await connection.query(

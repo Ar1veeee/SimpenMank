@@ -3,8 +3,8 @@ const passport = require("passport");
 const { findOrCreateUser, findUserById } = require("../models/usersModel");
 require("dotenv").config();
 
-// Extract environment variables once to avoid repeated lookups
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env;
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } =
+  process.env;
 
 passport.use(
   new GoogleStrategy(

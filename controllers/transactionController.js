@@ -27,7 +27,8 @@ const Transactions = async (req, res) => {
 
 const handleTransaction = async (req, res, type) => {
   const { user_id } = req.params;
-  const { wallet_name, category_name, transaction_date, amount, description } = req.body;
+  const { wallet_name, category_name, transaction_date, amount, description } =
+    req.body;
 
   if (!user_id) {
     return res.status(400).json({ message: "User ID is required" });
@@ -53,7 +54,9 @@ const handleTransaction = async (req, res, type) => {
     }
 
     if (!category_id) {
-      return res.status(400).json({ message: "Category not found in database" });
+      return res
+        .status(400)
+        .json({ message: "Category not found in database" });
     }
 
     await addTransaction(
@@ -80,7 +83,9 @@ const ExpenseTransaction = (req, res) => handleTransaction(req, res, "expense");
 const deleteTransaction = async (req, res) => {
   const { user_id, transaction_id } = req.params;
   if (!user_id || !transaction_id) {
-    return res.status(400).json({ message: "User ID & Transaction ID is required" });
+    return res
+      .status(400)
+      .json({ message: "User ID & Transaction ID is required" });
   }
 
   try {
@@ -90,7 +95,9 @@ const deleteTransaction = async (req, res) => {
       return res.status(404).json({ message: "Transaction not found" });
     }
 
-    res.status(200).json({ message: "Transaction has been successfully deleted" });
+    res
+      .status(200)
+      .json({ message: "Transaction has been successfully deleted" });
   } catch (error) {
     console.error("Error deleting transaction:", error);
     res.status(500).json({ message: "Internal Server Error" });

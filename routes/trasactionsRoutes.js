@@ -5,7 +5,7 @@ const {
   Transactions,
   IncomeTransaction,
   ExpenseTransaction,
-  deleteTransaction
+  deleteTransaction,
 } = require("../controllers/transactionController");
 
 router.use(verifyToken);
