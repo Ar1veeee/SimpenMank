@@ -4,6 +4,7 @@ const {
   updateUserTransactions,
   addTransaction,
   deleteUserTransaction,
+  getMonthlyReport,
 } = require("../models/transactionModel");
 const { getCategoryIdByName } = require("../models/categoryModel");
 const { getWalletIdByName } = require("../models/walletModel");
@@ -33,7 +34,9 @@ const UpdateTransaction = async (req, res, type) => {
     req.body;
 
   if (!user_id || !transaction_id) {
-    return res.status(400).json({ message: "User ID & Transaction ID is required" });
+    return res
+      .status(400)
+      .json({ message: "User ID & Transaction ID is required" });
   }
 
   if (!transaction_date || !amount || !category_name || !wallet_name) {
@@ -60,17 +63,17 @@ const UpdateTransaction = async (req, res, type) => {
         .json({ message: "Category not found in database" });
     }
 
-    await updateUserTransactions(  
+    await updateUserTransactions(
       user_id,
-      transaction_id,    
+      transaction_id,
       wallet_id,
       category_id,
       amount,
       description,
       transaction_date,
-      type,
+      type
     );
-    res.status(200).json({message: "Transaction update successfully"});
+    res.status(200).json({ message: "Transaction update successfully" });
   } catch (error) {
     console.error(`Error update ${type} transaction:`, error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -180,6 +183,31 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
+const MonthlyReports = async (req, res) => {
+  const { user_id } = req.params;
+  if (!user_id) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
+
+  try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User ID not found" });
+    }
+
+    const monthlyTransaction = await getMonthlyReport(user_id);
+
+    if (monthlyTransaction.length === 0) {
+      return res.status(404).json({ message: "No transactions found" });
+    }
+
+    res.status(200).json({ data: monthlyTransaction });
+  } catch (error) {
+    console.error("Error fetching monthly transactions:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   Transactions,
   TransactionDetails,
@@ -188,4 +216,5 @@ module.exports = {
   UpdateIncome,
   UpdateExpense,
   deleteTransaction,
+  MonthlyReports,
 };

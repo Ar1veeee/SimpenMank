@@ -19,6 +19,40 @@ const getUserTransactions = async (user_id) => {
   return rows;
 };
 
+const getMonthlyReport = async (user_id) => {
+  let connection;
+  try {
+    connection = await db.getConnection();
+    await connection.beginTransaction();
+    const [results] = await connection.query(
+      `SELECT 
+        DATE_FORMAT(transaction_date, '%Y-%m') AS month,
+        SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) AS total_income,
+        SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) AS total_expense,
+        (SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) - 
+         SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END)) AS net_balance
+      FROM transactions
+      WHERE user_id = ?
+      GROUP BY month
+      ORDER BY month DESC`,
+      [user_id]
+    );
+
+    await connection.commit();
+    return results;
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+    }
+    console.error("Error fetching monthly transactions:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+};
+
 const updateUserTransactions = async (
   user_id,
   transaction_id,
@@ -149,4 +183,5 @@ module.exports = {
   updateUserTransactions,
   addTransaction,
   deleteUserTransaction,
+  getMonthlyReport,
 };

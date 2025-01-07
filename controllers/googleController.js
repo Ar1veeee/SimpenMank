@@ -19,7 +19,7 @@ const googleCallback = (req, res, next) => {
         { expiresIn: "1h" }
       );
 
-      res.json({ message: "Login successful", token });
+      res.json({ message: "Login successful",UserID: user.id, user: user.username, token });
     }
   )(req, res, next);
 };
