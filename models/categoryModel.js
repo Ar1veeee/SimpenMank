@@ -31,6 +31,14 @@ const addCategory = async (user_id, name, type) => {
   }
 };
 
+const getCategoryDetail = async (user_id, category_id) => {
+  const [rows] = await db.query(
+    "SELECT name FROM categories WHERE user_id = ? AND id = ?",
+    [user_id, category_id]
+  );
+  return rows;
+};
+
 const getUserCategory = async (user_id, type) => {
   const [rows] = await db.query(
     "SELECT * FROM categories WHERE user_id = ? AND type = ? ",
@@ -54,6 +62,39 @@ const addExpenseCategory = async (user_id, name) => {
   return await addCategory(user_id, name, "expense");
 };
 
+const editCategoryName = async (user_id, category_id, name) => {
+  let connection;
+  try {
+    connection = await db.getConnection();
+    await connection.beginTransaction();
+    const [result] = await connection.query(
+      "UPDATE categories SET name = ? WHERE user_id = ? AND id = ?",
+      [name, user_id, category_id]
+    );
+
+    if (result.affectedRows === 0) {
+      return null;
+    }
+
+    const [updateName] = await connection.query(
+      "SELECT * FROM categories WHERE id = ?",
+      [category_id]
+    );
+    await connection.commit();
+    return updateName[0];
+  } catch (error) {
+    if (connection) {
+      await connection.rollback();
+    }
+    console.error("Error update name category:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      connection.release();
+    }
+  }
+};
+
 const getCategoryIdByName = async (category_name) => {
   const [rows] = await db.query("SELECT id FROM categories WHERE name = ?", [
     category_name,
@@ -64,7 +105,9 @@ const getCategoryIdByName = async (category_name) => {
 module.exports = {
   getUserCategory,
   getDefaultCategory,
+  getCategoryDetail,
   addIncomeCategory,
   addExpenseCategory,
   getCategoryIdByName,
+  editCategoryName,
 };
