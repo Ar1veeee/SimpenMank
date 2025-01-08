@@ -45,13 +45,6 @@ const getUserCategory = async (user_id, type) => {
   );
   return rows;
 };
-const getDefaultCategory = async (type) => {
-  const [rows] = await db.query(
-    "SELECT * FROM categories WHERE type = ? AND user_id IS NULL",
-    [type]
-  );
-  return rows;
-};
 
 const addIncomeCategory = async (user_id, name) => {
   return await addCategory(user_id, name, "income");
@@ -101,6 +94,40 @@ const deleteUserCategory = async (category_id) => {
   return result.affectedRows > 0;
 };
 
+const createDefaultCategory = async (user_id) => {
+  const defaultCategory = [
+    { name: "Salary", type: "income" },
+    { name: "Gift", type: "income" },
+    { name: "Bonus", type: "income" },
+    { name: "Business Income", type: "income" },
+    { name: "Interest", type: "income" },
+    { name: "Transport", type: "expense" },
+    { name: "Food", type: "expense" },
+    { name: "Social Life", type: "expense" },
+    { name: "Health", type: "expense" },
+    { name: "Apparel", type: "expense" },
+  ];
+
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+    for (const category of defaultCategory) {
+      await connection.query(
+        `INSERT INTO categories (user_id, name, type) 
+         VALUES (?, ?, ?)`,
+        [user_id, category.name, category.type]
+      );
+    }
+    await connection.commit();
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+};
+
 const getCategoryIdByName = async (category_name) => {
   const [rows] = await db.query("SELECT id FROM categories WHERE name = ?", [
     category_name,
@@ -110,11 +137,11 @@ const getCategoryIdByName = async (category_name) => {
 
 module.exports = {
   getUserCategory,
-  getDefaultCategory,
   getCategoryDetail,
   addIncomeCategory,
   addExpenseCategory,
   getCategoryIdByName,
   deleteUserCategory,
   editCategoryName,
+  createDefaultCategory
 };

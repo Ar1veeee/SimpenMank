@@ -1,6 +1,5 @@
 const {
   getUserCategory,
-  getDefaultCategory,
   getCategoryDetail,
   addIncomeCategory,
   addExpenseCategory,
@@ -27,10 +26,8 @@ const Categories = async (req, res) => {
     return res.status(404).json({ message: "User ID and Type Is Required" });
   }
   try {
-    const userCategories = await getUserCategory(user_id, type);
-    const defaultCategories = await getDefaultCategory(type);
-    const categories = [...userCategories, ...defaultCategories];
-    res.status(200).json({ categories });
+    const userCategories = await getUserCategory(user_id, type);    
+    res.status(200).json({ userCategories });
   } catch (error) {
     handleErrorResponse(res, error, "Error Fetching Category:");
   }
