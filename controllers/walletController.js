@@ -1,6 +1,8 @@
 const {
   getUserWallet,
   getDefaultWallet,
+  getWalletDetail,
+  updateUserWallet,
   addWallet,
 } = require("../models/walletModel");
 const { findUserById } = require("../models/usersModel");
@@ -32,6 +34,30 @@ const showWallet = async (req, res) => {
     res.status(500).json({
       message: "Error fetching wallets",
     });
+  }
+};
+
+const WalletDetail = async (req, res) => {
+  const { user_id, wallet_id } = req.params;
+
+  if (!user_id || !wallet_id) {
+    return res.status(400).json({ message: "User ID & Wallet ID is required" });
+  }
+  try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User ID not found" });
+    }
+
+    const result = await getWalletDetail(user_id, wallet_id);
+    if (result && result.balance) {
+      result.balance = Number(result.balance);
+    }
+    
+    res.status(200).json({ result });
+  } catch (error) {
+    console.error("Error fetching wallet detail:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -70,4 +96,30 @@ const addingWallet = async (req, res) => {
   }
 };
 
-module.exports = { showWallet, addingWallet };
+const UpdateWallet = async (req, res) => {
+  const { user_id, wallet_id } = req.params;
+  const { wallet_name, balance } = req.body;
+
+  if (!user_id || !wallet_id) {
+    return res.status(400).json({ message: "User ID & Wallet ID is required" });
+  }
+
+  if (!wallet_name || !balance) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User ID not found" });
+    }
+
+    await updateUserWallet(user_id, wallet_id, wallet_name, balance);
+    res.status(200).json({ message: "Wallet update successfully" });
+  } catch (error) {
+    console.error("Error update wallet", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+module.exports = { showWallet, addingWallet, UpdateWallet, WalletDetail };

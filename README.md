@@ -275,7 +275,14 @@
 - **Success Response**:
     ```json
     {
-      "data": []
+      "data": [
+        {
+            "month": "2025-01",
+            "total_income": "1000000.00",
+            "total_expense": "100000.00",
+            "net_balance": "900000.00"
+        }
+      ]
     }
     ```
 
