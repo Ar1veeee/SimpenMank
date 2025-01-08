@@ -94,7 +94,7 @@ const updateUserTransactions = async (
 
     const [updateTransaction] = await connection.query(
       "SELECT * FROM transactions WHERE id = ?",
-      [result.insertId]
+      [transaction_id]
     );
 
     await connection.commit();
@@ -112,10 +112,19 @@ const updateUserTransactions = async (
   }
 };
 
-const getTransactionDetails = async (user_id, transaction_id) => {
+const getTransactionDetail = async (user_id, transaction_id) => {
   const [rows] = await db.query(
     `
-    SELECT * FROM transactions WHERE user_id = ? AND id = ?
+    SELECT 
+      t.transaction_date, 
+      t.amount, 
+      c.name AS category_name, 
+      w.name AS wallet_name, 
+      t.description
+    FROM transactions t
+    JOIN categories c ON t.category_id = c.id
+    JOIN wallets w ON t.wallet_id = w.id
+    WHERE t.user_id = ? AND t.id = ?
     `,
     [user_id, transaction_id]
   );
@@ -179,7 +188,7 @@ const deleteUserTransaction = async (user_id, transaction_id) => {
 
 module.exports = {
   getUserTransactions,
-  getTransactionDetails,
+  getTransactionDetail,
   updateUserTransactions,
   addTransaction,
   deleteUserTransaction,
