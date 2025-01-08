@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const { compare } = require("bcrypt");
 const { findUserByEmail, createUser } = require("../models/usersModel");
-
+const { createDefaultWallets } = require("../models/walletModel");
+const { createDefaultCategory } = require("../models/categoryModel");
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -18,7 +19,12 @@ const login = async (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.json({ message: "Login Successfully", user_id: user.id, username: user.username, token });
+    res.json({
+      message: "Login Successfully",
+      user_id: user.id,
+      username: user.username,
+      token,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -63,7 +69,9 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    await createUser(username, email, password);
+    const result = await createUser(username, email, password);
+    await createDefaultWallets(result.id);
+    await createDefaultCategory(result.id);
     res.status(201).json({ message: "Registration Successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });

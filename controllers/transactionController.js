@@ -171,7 +171,7 @@ const deleteTransaction = async (req, res) => {
     const result = await deleteUserTransaction(user_id, transaction_id);
 
     if (!result) {
-      return res.status(404).json({ message: "Transaction not found" });
+      return res.status(400).json({ message: "Transaction not found" });
     }
 
     res
