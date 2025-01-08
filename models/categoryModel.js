@@ -31,10 +31,10 @@ const addCategory = async (user_id, name, type) => {
   }
 };
 
-const getCategoryDetail = async (user_id, category_id) => {
+const getCategoryDetail = async (category_id) => {
   const [rows] = await db.query(
-    "SELECT name FROM categories WHERE user_id = ? AND id = ?",
-    [user_id, category_id]
+    "SELECT name FROM categories WHERE id = ?",
+    [category_id]
   );
   return rows;
 };
@@ -62,14 +62,14 @@ const addExpenseCategory = async (user_id, name) => {
   return await addCategory(user_id, name, "expense");
 };
 
-const editCategoryName = async (user_id, category_id, name) => {
+const editCategoryName = async (category_id, name) => {
   let connection;
   try {
     connection = await db.getConnection();
     await connection.beginTransaction();
     const [result] = await connection.query(
-      "UPDATE categories SET name = ? WHERE user_id = ? AND id = ?",
-      [name, user_id, category_id]
+      "UPDATE categories SET name = ? WHERE  id = ?",
+      [name, category_id]
     );
 
     if (result.affectedRows === 0) {

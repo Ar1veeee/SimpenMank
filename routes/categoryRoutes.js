@@ -10,10 +10,11 @@ const {
 } = require("../controllers/categoryController");
 
 router.use(verifyToken);
-router.get("/:user_id/:category_id", CategoryDetail);
-router.patch("/:user_id/:category_id", UpdateCategory);
-router.get("/:user_id/:type", Categories);
 router.post("/:user_id/income", IncomeCategory);
 router.post("/:user_id/expense", ExpenseCategory);
+router.get("/:user_id/:type", Categories);
+
+router.get("/:category_id", CategoryDetail);
+router.patch("/:category_id", UpdateCategory);
 
 module.exports = router;

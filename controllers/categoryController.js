@@ -6,7 +6,7 @@ const {
   addExpenseCategory,
   editCategoryName,
 } = require("../models/categoryModel");
-const { findOrCreateUser, findUserById } = require("../models/usersModel");
+const { findUserById } = require("../models/usersModel");
 
 const handleErrorResponse = (res, error, message) => {
   console.error(message, error);
@@ -37,22 +37,17 @@ const Categories = async (req, res) => {
 };
 
 const CategoryDetail = async (req, res) => {
-  const { user_id, category_id } = req.params;
-  if (!user_id || !category_id) {
+  const { category_id } = req.params;
+  if (!category_id) {
     return res
       .status(404)
       .json({ message: "User ID and Category ID Is Required" });
   }
 
   try {
-    const user = await findUserById(user_id);
-    if (!user) {
-      return res.status(404).json({ message: "User ID Not Found" });
-    }
-
-    const result = await getCategoryDetail(user_id, category_id);
-    if (!result) {  
-      return res.status(404).json({ message: "Category Not Found" });  
+    const result = await getCategoryDetail(category_id);
+    if (!result) {
+      return res.status(404).json({ message: "Category Not Found" });
     }
     res.status(200).json({ result });
   } catch (error) {
@@ -88,10 +83,10 @@ const ExpenseCategory = async (req, res) => {
 };
 
 const UpdateCategory = async (req, res) => {
-  const { user_id, category_id } = req.params;
+  const { category_id } = req.params;
   const { category_name } = req.body;
 
-  if (!user_id || !category_id) {
+  if (!category_id) {
     return res
       .status(400)
       .json({ message: "User ID & Category ID is required" });
@@ -102,12 +97,7 @@ const UpdateCategory = async (req, res) => {
   }
 
   try {
-    const user = await findUserById(user_id);
-    if (!user) {
-      return res.status(404).json({ message: "User ID Not Found" });
-    }
-
-    await editCategoryName(user_id, category_id, category_name);
+    await editCategoryName(category_id, category_name);
     res.status(200).json({ message: "Category update successfully" });
   } catch (error) {
     console.error("Error update category:", error);
@@ -115,4 +105,10 @@ const UpdateCategory = async (req, res) => {
   }
 };
 
-module.exports = { Categories, IncomeCategory, ExpenseCategory, CategoryDetail, UpdateCategory };
+module.exports = {
+  Categories,
+  IncomeCategory,
+  ExpenseCategory,
+  CategoryDetail,
+  UpdateCategory,
+};

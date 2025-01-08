@@ -28,7 +28,7 @@ const getDefaultWallet = async (user_id) => {
 const getWalletDetail = async (user_id, wallet_id) => {
   try {
     const [rows] = await db.query(
-      "SELECT * FROM wallets WHERE id = ?",
+      "SELECT name, balance FROM wallets WHERE id = ?",
       [user_id, wallet_id]
     );
 
