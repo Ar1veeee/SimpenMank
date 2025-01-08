@@ -28,7 +28,7 @@ const getDefaultWallet = async (user_id) => {
 const getWalletDetail = async (user_id, wallet_id) => {
   try {
     const [rows] = await db.query(
-      "SELECT * FROM wallets WHERE user_id = ? AND id = ?",
+      "SELECT * FROM wallets WHERE id = ?",
       [user_id, wallet_id]
     );
 
@@ -72,7 +72,7 @@ const addWallet = async (user_id, name, balance) => {
   }
 };
 
-const updateUserWallet = async (user_id, wallet_id, name, balance) => {
+const updateUserWallet = async (wallet_id, name, balance) => {
   let connection;
   try {
     connection = await db.getConnection();
@@ -81,8 +81,8 @@ const updateUserWallet = async (user_id, wallet_id, name, balance) => {
       `UPDATE
       wallets SET name = ?,
       balance = ?
-      WHERE user_id = ? AND id = ?`,
-      [name, balance, user_id, wallet_id]
+      WHERE id = ?`,
+      [name, balance, wallet_id]
     );
 
     if (result.affectedRows === 0) {

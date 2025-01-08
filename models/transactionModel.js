@@ -158,6 +158,18 @@ const addTransaction = async (
       ]
     );
 
+    if (type === "income") {
+      await connection.query(
+        "UPDATE wallets SET balance = IFNULL(balance, 0) + ? WHERE id = ?",
+        [amount, wallet_id]
+      );
+    } else if (type === "expense") {      
+      await connection.query(
+        "UPDATE wallets SET balance = IFNULL(balance, 0) - ? WHERE id = ?",
+        [amount, wallet_id]
+      );
+    }
+
     const [newTransaction] = await connection.query(
       "SELECT * FROM transactions WHERE id = ?",
       [result.insertId]
