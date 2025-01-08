@@ -1,7 +1,5 @@
 const passport = require("passport");
-const axios = require("axios");
 const jwt = require("jsonwebtoken");
-const { findOrCreateUser } = require("../models/usersModel");
 const { createDefaultWallets } = require("../models/walletModel");
 const { createDefaultCategory } = require("../models/categoryModel");
 
