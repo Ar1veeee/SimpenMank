@@ -4,7 +4,7 @@ const {
   addIncomeCategory,
   addExpenseCategory,
   editCategoryName,
-  deleteUserCategory
+  deleteUserCategory,  
 } = require("../models/categoryModel");
 
 const handleErrorResponse = (res, error, message) => {
@@ -26,7 +26,7 @@ const Categories = async (req, res) => {
     return res.status(404).json({ message: "User ID and Type Is Required" });
   }
   try {
-    const userCategories = await getUserCategory(user_id, type);    
+    const userCategories = await getUserCategory(user_id, type);
     res.status(200).json({ userCategories });
   } catch (error) {
     handleErrorResponse(res, error, "Error Fetching Category:");
@@ -103,28 +103,22 @@ const UpdateCategory = async (req, res) => {
 };
 
 const DeleteCategory = async (req, res) => {
-  const {category_id} =req.params;
+  const { category_id } = req.params;
   if (category_id) {
-    return res
-    .status(400)
-    .json({message: "Category ID is required"})
+    return res.status(400).json({ message: "Category ID is required" });
   }
   try {
     const result = await deleteUserCategory(category_id);
     if (!result) {
-      return res
-      .status(400)
-      .json({message: "Category not found"})
+      return res.status(400).json({ message: "Category not found" });
     }
 
-    res
-    .status(200)
-    .json({message: "Category has been successfully deleted"})
+    res.status(200).json({ message: "Category has been successfully deleted" });
   } catch (error) {
     console.error("Error deleting category:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};
 
 module.exports = {
   Categories,
@@ -132,5 +126,5 @@ module.exports = {
   ExpenseCategory,
   CategoryDetail,
   UpdateCategory,
-  DeleteCategory
+  DeleteCategory,  
 };

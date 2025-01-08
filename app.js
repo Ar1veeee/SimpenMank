@@ -5,6 +5,7 @@ const testRoutes = require("./routes/testRoutes");
 const walletRoutes = require("./routes/walletRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const transactionRoutes = require("./routes/trasactionsRoutes");
+const budgetRoutes = require("./routes/budgetRoutes");
 require("./config/passport");
 require("dotenv").config();
 
@@ -17,6 +18,7 @@ app.use("/profile", profileRoutes);
 app.use("/transaction", transactionRoutes);
 app.use("/wallet", walletRoutes);
 app.use("/category", categoryRoutes);
+app.use("/budget", budgetRoutes);
 app.use("/test", testRoutes);
 
 module.exports = app;

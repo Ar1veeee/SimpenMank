@@ -7,7 +7,7 @@ const {
   IncomeCategory,
   ExpenseCategory,
   UpdateCategory,
-  DeleteCategory
+  DeleteCategory,
 } = require("../controllers/categoryController");
 
 router.use(verifyToken);
