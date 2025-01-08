@@ -17,7 +17,9 @@ const findOrCreateUser = async (profile) => {
   const [[existingUser]] = await db.query(QUERY_FIND_USER_BY_GOOGLE_ID, [
     google_id,
   ]);
-  if (existingUser) return existingUser;
+  if (existingUser) {
+    return {...existingUser, isNewUser: false}
+  };
 
   const [result] = await db.query(QUERY_INSERT_USER, [
     google_id,
@@ -32,6 +34,7 @@ const findOrCreateUser = async (profile) => {
     username: displayName,
     email,
     auth_method: "google",
+    isNewUser: true,
   };
 };
 
