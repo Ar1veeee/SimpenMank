@@ -5,8 +5,8 @@ const {
   addIncomeCategory,
   addExpenseCategory,
   editCategoryName,
+  deleteUserCategory
 } = require("../models/categoryModel");
-const { findUserById } = require("../models/usersModel");
 
 const handleErrorResponse = (res, error, message) => {
   console.error(message, error);
@@ -105,10 +105,35 @@ const UpdateCategory = async (req, res) => {
   }
 };
 
+const DeleteCategory = async (req, res) => {
+  const {category_id} =req.params;
+  if (category_id) {
+    return res
+    .status(400)
+    .json({message: "Category ID is required"})
+  }
+  try {
+    const result = await deleteUserCategory(category_id);
+    if (!result) {
+      return res
+      .status(400)
+      .json({message: "Category not found"})
+    }
+
+    res
+    .status(200)
+    .json({message: "Category has been successfully deleted"})
+  } catch (error) {
+    console.error("Error deleting category:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   Categories,
   IncomeCategory,
   ExpenseCategory,
   CategoryDetail,
   UpdateCategory,
+  DeleteCategory
 };

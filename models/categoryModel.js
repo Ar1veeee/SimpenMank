@@ -32,10 +32,9 @@ const addCategory = async (user_id, name, type) => {
 };
 
 const getCategoryDetail = async (category_id) => {
-  const [rows] = await db.query(
-    "SELECT name FROM categories WHERE id = ?",
-    [category_id]
-  );
+  const [rows] = await db.query("SELECT name FROM categories WHERE id = ?", [
+    category_id,
+  ]);
   return rows;
 };
 
@@ -95,6 +94,13 @@ const editCategoryName = async (category_id, name) => {
   }
 };
 
+const deleteUserCategory = async (category_id) => {
+  const [result] = await db.query("DELETE FROM categories WHERE id = ?", [
+    category_id,
+  ]);
+  return result.affectedRows > 0;
+};
+
 const getCategoryIdByName = async (category_name) => {
   const [rows] = await db.query("SELECT id FROM categories WHERE name = ?", [
     category_name,
@@ -109,5 +115,6 @@ module.exports = {
   addIncomeCategory,
   addExpenseCategory,
   getCategoryIdByName,
+  deleteUserCategory,
   editCategoryName,
 };

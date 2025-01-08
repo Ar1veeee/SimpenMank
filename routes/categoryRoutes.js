@@ -7,6 +7,7 @@ const {
   IncomeCategory,
   ExpenseCategory,
   UpdateCategory,
+  DeleteCategory
 } = require("../controllers/categoryController");
 
 router.use(verifyToken);
@@ -16,5 +17,6 @@ router.get("/:user_id/:type", Categories);
 
 router.get("/:category_id", CategoryDetail);
 router.patch("/:category_id", UpdateCategory);
+router.delete("/:category_id", DeleteCategory);
 
 module.exports = router;
