@@ -1,9 +1,9 @@
 const {
   getUserWallet,
-  getDefaultWallet,
   getWalletDetail,
   updateUserWallet,
   addWallet,
+  deleteUserWallet,
 } = require("../models/walletModel");
 const { findUserById } = require("../models/usersModel");
 
@@ -17,17 +17,13 @@ const showWallet = async (req, res) => {
 
   try {
     const user = await findUserById(user_id);
-    const wallets = await Promise.all([
-      getUserWallet(user_id),
-      getDefaultWallet(),
-    ]);
-
     if (!user) {
       return res.status(404).json({
         message: "User ID not found",
       });
     }
 
+    const wallets = await getUserWallet(user_id);
     res.status(200).json({ wallets });
   } catch (error) {
     console.error("Error fetching wallets:", error);
@@ -46,7 +42,7 @@ const WalletDetail = async (req, res) => {
   try {
     const result = await getWalletDetail(wallet_id);
     if (result && result.balance) {
-      result.balance = Number(result. balance);
+      result.balance = Number(result.balance);
     }
 
     res.status(200).json({ result });
@@ -112,4 +108,28 @@ const UpdateWallet = async (req, res) => {
   }
 };
 
-module.exports = { showWallet, addingWallet, UpdateWallet, WalletDetail };
+const DeleteWallet = async (req, res) => {
+  const { wallet_id } = req.params;
+  if (wallet_id) {
+    return res.status(400).json({ message: "Wallet ID is required" });
+  }
+  try {
+    const result = await deleteUserWallet(wallet_id);
+    if (!result) {
+      return res.status(400).json({ message: "Wallet not found" });
+    }
+
+    res.status(200).json({ message: "Wallet has been successfully deleted" });
+  } catch (error) {
+    console.error("Error deleting Wallet:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+module.exports = {
+  showWallet,
+  addingWallet,
+  UpdateWallet,
+  WalletDetail,
+  DeleteWallet,
+};

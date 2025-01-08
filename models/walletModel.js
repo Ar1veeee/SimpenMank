@@ -12,19 +12,6 @@ const getUserWallet = async (user_id) => {
   }
 };
 
-const getDefaultWallet = async (user_id) => {
-  try {
-    const [rows] = await db.query(
-      "SELECT * FROM wallets WHERE user_id IS NULL",
-      [user_id]
-    );
-    return rows.map((row) => ({ ...row, balance: Number(row.balance) }));
-  } catch (error) {
-    console.error("Error fetching wallet list:", error);
-    throw error;
-  }
-};
-
 const getWalletDetail = async (user_id, wallet_id) => {
   try {
     const [rows] = await db.query(
@@ -109,6 +96,40 @@ const updateUserWallet = async (wallet_id, name, balance) => {
   }
 };
 
+const deleteUserWallet = async (wallet_id) => {
+  const [result] = await db.query("DELETE FROM wallets WHERE id = ?", [
+    wallet_id,
+  ]);
+  return result.affectedRows > 0;
+};
+
+const createDefaultWallets = async (user_id) => {
+  const defaultWallets = [
+    { name: "Cash", balance: 0 },
+    { name: "Bank Accounts", balance: 0 },
+    { name: "Card", balance: 0 },
+  ];
+
+  const connection = await db.getConnection();
+
+  try {
+    await connection.beginTransaction();
+    for (const wallet of defaultWallets) {
+      await connection.query(
+        `INSERT INTO wallets (user_id, name, balance) 
+         VALUES (?, ?, ?)`,
+        [user_id, wallet.name, wallet.balance]
+      );
+    }
+    await connection.commit();
+  } catch (error) {
+    await connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+};
+
 const getWalletIdByName = async (wallet_name) => {
   try {
     const [rows] = await db.query("SELECT id FROM wallets WHERE name = ?", [
@@ -123,9 +144,10 @@ const getWalletIdByName = async (wallet_name) => {
 
 module.exports = {
   getUserWallet,
-  getDefaultWallet,
   getWalletDetail,
   addWallet,
   updateUserWallet,
+  deleteUserWallet,
   getWalletIdByName,
+  createDefaultWallets,
 };
