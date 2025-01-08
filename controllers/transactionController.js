@@ -1,6 +1,6 @@
 const {
   getUserTransactions,
-  getTransactionDetails,
+  getTransactionDetail,
   updateUserTransactions,
   addTransaction,
   deleteUserTransaction,
@@ -83,7 +83,7 @@ const UpdateTransaction = async (req, res, type) => {
 const UpdateIncome = (req, res) => UpdateTransaction(req, res, "income");
 const UpdateExpense = (req, res) => UpdateTransaction(req, res, "expense");
 
-const TransactionDetails = async (req, res) => {
+const TransactionDetail = async (req, res) => {
   const { user_id, transaction_id } = req.params;
   if (!user_id || !transaction_id) {
     return res.status(400).json({ message: "Missing required fields" });
@@ -93,11 +93,11 @@ const TransactionDetails = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User ID not found" });
     }
-    const transactionDetail = await getTransactionDetails(
+    const result = await getTransactionDetail(
       user_id,
       transaction_id
     );
-    res.status(200).json({ transactionDetail });
+    res.status(200).json({ result });
   } catch (error) {
     console.error("Error fetching transaction detail:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -210,7 +210,7 @@ const MonthlyReports = async (req, res) => {
 
 module.exports = {
   Transactions,
-  TransactionDetails,
+  TransactionDetail,
   IncomeTransaction,
   ExpenseTransaction,
   UpdateIncome,

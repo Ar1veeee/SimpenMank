@@ -3,7 +3,7 @@ const verifyToken = require("../middlewares/authMiddlewares");
 const router = express.Router();
 const {
   Transactions,
-  TransactionDetails,
+  TransactionDetail,
   IncomeTransaction,
   ExpenseTransaction,
   UpdateIncome,
@@ -20,6 +20,6 @@ router.get("/:user_id/monthly", MonthlyReports);
 router.put("/:user_id/:transaction_id/income", UpdateIncome);
 router.put("/:user_id/:transaction_id/expense", UpdateExpense);
 router.delete("/:user_id/:transaction_id", deleteTransaction);
-router.get("/:user_id/:transaction_id", TransactionDetails);
+router.get("/:user_id/:transaction_id", TransactionDetail);
 
 module.exports = router;
