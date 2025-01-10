@@ -43,16 +43,14 @@ CREATE TABLE `wallets` (
 	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE    
 );
 
-CREATE TABLE `budgets` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,  
+CREATE TABLE `goals` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
     `user_id` INT NOT NULL,
-    `category_id` INT NOT NULL,
-    `limit_amount` DECIMAL(15, 2) DEFAULT NULL, 
-    `remaining_amount` DECIMAL(15, 2) DEFAULT NULL,
-    `start_date` DATE NOT NULL,
-    `end_date` DATE NOT NULL, 
+    `name` VARCHAR(255) NOT NULL,
+    `target_amount` DECIMAL(15, 2) NOT NULL,
+    `current_amount` DECIMAL(15, 2) DEFAULT 0,
+    `deadline` DATE NOT NULL,
+    `status` ENUM('in_progress', 'completed', 'expired') DEFAULT 'in_progress',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, 
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE 
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
