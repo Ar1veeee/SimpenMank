@@ -11,7 +11,7 @@ exports.testDB = async (req, res) => {
   try {
     await db.query("SELECT 1");
     res.status(200).json({
-      message: "Database connection successful",
+      message: "Connected to Database",
     });
   } catch (error) {
     console.error("Database connection failed:", error);

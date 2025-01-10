@@ -19,7 +19,7 @@ const showWallet = async (req, res) => {
     const user = await findUserById(user_id);
     if (!user) {
       return res.status(404).json({
-        message: "User ID not found",
+        message: "User not found",
       });
     }
 
@@ -64,7 +64,7 @@ const addingWallet = async (req, res) => {
 
   if (!name || balance === undefined) {
     return res.status(400).json({
-      message: "Wallet name and balance are required",
+      message: "Missing required fields",
     });
   }
 
@@ -78,7 +78,7 @@ const addingWallet = async (req, res) => {
     }
 
     await addWallet(user_id, name, balance);
-    res.status(201).json({ message: "Wallet added successfully" });
+    res.status(201).json({ message: "Wallet successfully added" });
   } catch (error) {
     console.error("Error adding wallet:", error);
     res.status(500).json({
@@ -90,7 +90,7 @@ const addingWallet = async (req, res) => {
 const UpdateWallet = async (req, res) => {
   const { wallet_id } = req.params;
   const { wallet_name, balance } = req.body;
-  
+
   if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
@@ -100,7 +100,11 @@ const UpdateWallet = async (req, res) => {
   }
 
   if (isNaN(balance) || balance < 0) {
-    return res.status(400).json({ message: "Balance must be a valid number and cannot be negative" });
+    return res
+      .status(400)
+      .json({
+        message: "Balance must be a valid number and cannot be negative",
+      });
   }
 
   try {

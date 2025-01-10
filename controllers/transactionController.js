@@ -18,7 +18,7 @@ const Transactions = async (req, res) => {
   try {
     const user = await findUserById(user_id);
     if (!user) {
-      return res.status(404).json({ message: "User ID not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     const transactions = await getUserTransactions(user_id);
     res.status(200).json({ transactions });
@@ -73,7 +73,7 @@ const UpdateTransaction = async (req, res, type) => {
       transaction_date,
       type
     );
-    res.status(200).json({ message: "Transaction update successfully" });
+    res.status(200).json({ message: "Transaction successfully updated" });
   } catch (error) {
     console.error(`Error update ${type} transaction:`, error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -91,7 +91,7 @@ const TransactionDetail = async (req, res) => {
   try {
     const user = await findUserById(user_id);
     if (!user) {
-      return res.status(404).json({ message: "User ID not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     const result = await getTransactionDetail(
       user_id,
@@ -125,7 +125,7 @@ const handleTransaction = async (req, res, type) => {
     ]);
 
     if (!user) {
-      return res.status(404).json({ message: "User ID not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     if (!wallet_id) {
@@ -148,7 +148,7 @@ const handleTransaction = async (req, res, type) => {
       type
     );
 
-    res.status(201).json({ message: "Transaction added successfully" });
+    res.status(201).json({ message: "Transaction successfully added" });
   } catch (error) {
     console.error(`Error adding ${type} transaction:`, error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -176,7 +176,7 @@ const deleteTransaction = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Transaction has been successfully deleted" });
+      .json({ message: "Transaction successfully deleted" });
   } catch (error) {
     console.error("Error deleting transaction:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -192,7 +192,7 @@ const MonthlyReports = async (req, res) => {
   try {
     const user = await findUserById(user_id);
     if (!user) {
-      return res.status(404).json({ message: "User ID not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const monthlyTransaction = await getMonthlyReport(user_id);

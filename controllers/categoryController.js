@@ -59,7 +59,7 @@ const IncomeCategory = async (req, res) => {
   if (!validateRequestBody(res, name, "Category Name")) return;
   try {
     await addIncomeCategory(user_id, name);
-    res.status(201).json({ message: "Income category added successfully" });
+    res.status(201).json({ message: "Income category successfully added" });
   } catch (error) {
     handleErrorResponse(res, error, "Error Adding Income Category:");
   }
@@ -73,7 +73,7 @@ const ExpenseCategory = async (req, res) => {
 
   try {
     await addExpenseCategory(user_id, name);
-    res.status(201).json({ message: "Expense category added successfully" });
+    res.status(201).json({ message: "Expense category successfully added" });
   } catch (error) {
     handleErrorResponse(res, error, "Error Adding Expense Category:");
   }
@@ -95,7 +95,7 @@ const UpdateCategory = async (req, res) => {
 
   try {
     await editCategoryName(category_id, category_name);
-    res.status(200).json({ message: "Category update successfully" });
+    res.status(200).json({ message: "Category successfully updated" });
   } catch (error) {
     console.error("Error update category:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -113,7 +113,7 @@ const DeleteCategory = async (req, res) => {
       return res.status(400).json({ message: "Category not found" });
     }
 
-    res.status(200).json({ message: "Category has been successfully deleted" });
+    res.status(200).json({ message: "Category successfully deleted" });
   } catch (error) {
     console.error("Error deleting category:", error);
     res.status(500).json({ message: "Internal Server Error" });

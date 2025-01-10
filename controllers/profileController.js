@@ -28,7 +28,7 @@ const updatePassword = async (req, res) => {
     }
 
     await updateUserPassword(user_id, newPassword);
-    res.status(200).json({ message: "Password updated successfully" });
+    res.status(200).json({ message: "Password successfully updated" });
   } catch (error) {
     console.error("Error Fetching Update Password:", error);
     res.status(500).json({ message: "Internal Server Error" });
