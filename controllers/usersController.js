@@ -5,6 +5,9 @@ const { createDefaultWallets } = require("../models/walletModel");
 const { createDefaultCategory } = require("../models/categoryModel");
 const login = async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
   try {
     const user = await findUserByEmail(email);
     if (!user) {
@@ -33,7 +36,7 @@ const login = async (req, res) => {
 const validatePassword = (password) => {
   const validations = [
     {
-      regex: /^(?=.*[A-Z]).{7,}$/,
+      regex: /^(?=.*[A-Z]).{8,}$/,
       message:
         "Password must be at least 8 characters and include an uppercase letter.",
     },
@@ -58,6 +61,10 @@ const validatePassword = (password) => {
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: "Invalid email format" });
+  }
   const passwordError = validatePassword(password);
   if (passwordError) {
     return res.status(400).json({ message: passwordError });

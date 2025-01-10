@@ -8,13 +8,11 @@ const googleLogin = passport.authenticate("google", {
 });
 
 const googleCallback = (req, res, next) => {
-  passport.authenticate(
-    "google",
-    { failureRedirect: "/login" },
-    async (err, user) => {
-      if (err) return next(err);
-      if (!user) return res.redirect("/login");
+  passport.authenticate("google", { failureRedirect: "/login" }, async (err, user) => {
+    if (err) return next(err);
+    if (!user) return res.redirect("/login");
 
+    try {
       const token = jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
@@ -26,14 +24,24 @@ const googleCallback = (req, res, next) => {
         await createDefaultCategory(user.id);
       }
 
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        maxAge: 3600000,
+      });
+
       res.json({
         message: "Login successful",
-        UserID: user.id,
-        user: user.username,
+        user_id: user.id,
+        username: user.username,
         token,
       });
+    } catch (error) {
+      console.error("Error during user initialization:", error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
-  )(req, res, next);
+  })(req, res, next);
 };
 
 module.exports = { googleLogin, googleCallback };

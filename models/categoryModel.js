@@ -128,8 +128,6 @@ const createDefaultCategory = async (user_id) => {
   }
 };
 
-
-
 const getCategoryIdByName = async (category_name) => {
   const [rows] = await db.query("SELECT id FROM categories WHERE name = ?", [
     category_name,
@@ -145,5 +143,5 @@ module.exports = {
   getCategoryIdByName,
   deleteUserCategory,
   editCategoryName,
-  createDefaultCategory,  
+  createDefaultCategory,
 };

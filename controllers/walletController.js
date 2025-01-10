@@ -90,13 +90,17 @@ const addingWallet = async (req, res) => {
 const UpdateWallet = async (req, res) => {
   const { wallet_id } = req.params;
   const { wallet_name, balance } = req.body;
-
+  
   if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
 
   if (!wallet_name || !balance) {
     return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  if (isNaN(balance) || balance < 0) {
+    return res.status(400).json({ message: "Balance must be a valid number and cannot be negative" });
   }
 
   try {
@@ -110,7 +114,7 @@ const UpdateWallet = async (req, res) => {
 
 const DeleteWallet = async (req, res) => {
   const { wallet_id } = req.params;
-  if (wallet_id) {
+  if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
   try {

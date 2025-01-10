@@ -34,9 +34,14 @@ const addLimitAmount = async (req, res) => {
       message: "Missing required field",
     });
   }
+
+  if (isNaN(limit_amount) || limit_amount < 0) {
+    return res.status(400).json({ message: "Limit amount must be a valid number and cannot be negative" });
+  }
+
   try {
     await editLimitAmount(category_id, limit_amount);
-    res.status(200).json({ message: "Limit Amount successfully added" });
+    res.status(200).json({ message: "Limit Amount successfully set" });
   } catch (error) {
     console.error("Error update limit amount", error);
     res.status(500).json({ message: "Internal Server Error" });

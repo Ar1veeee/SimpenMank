@@ -331,9 +331,9 @@
     "data": [
       {
         "month": "2025-01",
-        "total_income": "1000000.00",
-        "total_expense": "100000.00",
-        "net_balance": "900000.00"
+        "total_income": 1000000,
+        "total_expense": 100000,
+        "net_balance": 900000
       }
     ]
   }
@@ -411,6 +411,69 @@
   ```
 
 ---
+
+## Budget Management
+
+### Weekly Report
+
+- **Endpoint**: `/:user_id/weekly`
+- **Method**: `GET`
+- **Success Response**:
+  ```json
+  {
+    "category_id": "",
+    "category_name": "",
+    "limit_amount": "",
+    "total_amount": "",
+    "remaining_budget": "",
+  }
+  ```
+### Monthly Report
+
+- **Endpoint**: `/:user_id/monthly`
+- **Method**: `GET`
+- **Success Response**:
+  ```json
+  {
+    "category_id": "",
+    "category_name": "",
+    "limit_amount": "",
+    "total_amount": "",
+    "remaining_budget": "",
+  }
+  ```
+### Annually Report
+
+- **Endpoint**: `/:user_id/annually`
+- **Method**: `GET`
+- **Success Response**:
+  ```json
+  {
+    "category_id": "",
+    "category_name": "",
+    "limit_amount": "",
+    "total_amount": "",
+    "remaining_budget": "",
+  }
+  ```
+
+### Edit Budget
+
+- **Endpoint**: `/:category_id`
+- **Method**: `PATCH`
+- **Request Body**:
+  ```json
+  {
+    "limit_amount": number
+  }
+  ```
+- **Success Response**:
+  ```json
+  {
+    "message": "Limit Amount successfully set"   
+  }
+  ```
+----
 
 ## System Health
 

@@ -38,7 +38,7 @@ const CategoryDetail = async (req, res) => {
   if (!category_id) {
     return res
       .status(404)
-      .json({ message: "User ID and Category ID Is Required" });
+      .json({ message: "Category ID Is Required" });
   }
 
   try {
@@ -104,7 +104,7 @@ const UpdateCategory = async (req, res) => {
 
 const DeleteCategory = async (req, res) => {
   const { category_id } = req.params;
-  if (category_id) {
+  if (!category_id) {
     return res.status(400).json({ message: "Category ID is required" });
   }
   try {
