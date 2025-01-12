@@ -6,6 +6,7 @@ const {
   editCategoryName,
   deleteUserCategory,
 } = require("../models/categoryModel");
+const { findUserById } = require("../models/usersModel");
 
 const handleErrorResponse = (res, error, message) => {
   console.error(message, error);
