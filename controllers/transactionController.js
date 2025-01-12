@@ -196,7 +196,7 @@ const MonthlyReports = async (req, res) => {
       return res.status(404).json({ message: "No transactions found" });
     }
 
-    res.status(200).json({ data: monthlyTransaction });
+    res.status(200).json({ monthlyTransaction });
   } catch (error) {
     console.error("Error fetching monthly transactions:", error);
     res.status(500).json({ message: "Internal Server Error" });

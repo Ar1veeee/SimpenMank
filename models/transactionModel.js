@@ -143,7 +143,17 @@ const getTransactionDetail = async (user_id, transaction_id) => {
     `,
     [user_id, transaction_id]
   );
-  return rows[0];
+  return rows.map((rows) => ({ 
+    ...rows, 
+    amount: Number(rows.amount),
+    transaction_date: rows.transaction_date
+      ? new Date(rows.transaction_date).toLocaleString("id-ID", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      : null,
+   }));
 };
 
 const addTransaction = async (
