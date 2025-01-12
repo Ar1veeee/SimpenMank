@@ -24,7 +24,7 @@ const showWallet = async (req, res) => {
     }
 
     const wallets = await getUserWallet(user_id);
-    res.status(200).json(wallets);
+    res.status(200).json({wallets});
   } catch (error) {
     console.error("Error fetching wallets:", error);
     res.status(500).json({
