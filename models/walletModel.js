@@ -143,10 +143,10 @@ const createDefaultWallets = async (user_id) => {
   }
 };
 
-const getWalletIdByName = async (wallet_name) => {
+const getWalletIdByName = async (wallet_name, user_id) => {
   try {
-    const [rows] = await db.query("SELECT id FROM wallets WHERE name = ?", [
-      wallet_name,
+    const [rows] = await db.query("SELECT id FROM wallets WHERE name = ? AND user_id = ?", [
+      wallet_name, user_id,
     ]);
     return rows.length > 0 ? rows[0].id : null;
   } catch (error) {

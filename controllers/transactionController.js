@@ -50,8 +50,8 @@ const UpdateTransaction = async (req, res, type) => {
 
   try {
     const [wallet_id, category_id] = await Promise.all([
-      getWalletIdByName(wallet_name),
-      getCategoryIdByName(category_name),
+      getWalletIdByName(wallet_name, user_id),
+      getCategoryIdByName(category_name, user_id),
     ]);
 
     if (!wallet_id) {
@@ -100,7 +100,7 @@ const TransactionDetail = async (req, res) => {
 };
 
 const handleTransaction = async (req, res, type) => {
-  const user_id = req.user.id;
+  const user_id = req.user.id;  
 
   const { wallet_name, category_name, transaction_date, amount, description } =
     req.body;
@@ -121,8 +121,8 @@ const handleTransaction = async (req, res, type) => {
 
   try {
     const [wallet_id, category_id] = await Promise.all([
-      getWalletIdByName(wallet_name),
-      getCategoryIdByName(category_name),
+      getWalletIdByName(wallet_name, user_id),
+      getCategoryIdByName(category_name, user_id),
     ]);
 
     if (!wallet_id) {
