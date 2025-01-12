@@ -66,14 +66,14 @@ const CategoryDetail = async (req, res) => {
 
 const IncomeCategory = async (req, res) => {
   const user_id = req.user.id;
-  const { name } = req.body;
-  if (!validateRequestBody(res, name, "Category Name")) return;
+  const { category_name } = req.body;
+  if (!validateRequestBody(res, category_name, "Category Name")) return;
   try {
     const user = await findUserById(user_id);
     if (!user) {
       return res.status(404).json({ message: "User Not Found" });
     }
-    await addIncomeCategory(user_id, name);
+    await addIncomeCategory(user_id, category_name);
     res.status(201).json({ message: "Income category successfully added" });
   } catch (error) {
     handleErrorResponse(res, error, "Error Adding Income Category:");
@@ -82,16 +82,16 @@ const IncomeCategory = async (req, res) => {
 
 const ExpenseCategory = async (req, res) => {
   const user_id = req.user.id;
-  const { name } = req.body;
+  const { category_name } = req.body;
 
-  if (!validateRequestBody(res, name, "Category Name")) return;
+  if (!validateRequestBody(res, category_name, "Category Name")) return;
 
   try {
     const user = await findUserById(user_id);
     if (!user) {
       return res.status(404).json({ message: "User Not Found" });
     }
-    await addExpenseCategory(user_id, name);
+    await addExpenseCategory(user_id, category_name);
     res.status(201).json({ message: "Expense category successfully added" });
   } catch (error) {
     handleErrorResponse(res, error, "Error Adding Expense Category:");
