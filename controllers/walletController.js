@@ -115,7 +115,7 @@ const UpdateWallet = async (req, res) => {
         message: "User not found",
       });
     }
-    await updateUserWallet(user_id, wallet_id, wallet_name, balance);
+    await updateUserWallet(user_id, wallet_id, wallet_name);
     res.status(200).json({ message: "Wallet update successfully" });
   } catch (error) {
     console.error("Error update wallet", error);
