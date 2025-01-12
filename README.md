@@ -76,7 +76,7 @@
   ```json
   {
     "message": "Login successful",
-    "UserID": "user_id",
+    "user_id": "user_id",
     "user": "username",
     "token": "jwt_token"
   }
@@ -193,9 +193,22 @@
   ```json
   {
     "wallets": [
-      {
-        "user_wallets"
-      }
+      "wallets": [
+        {
+            "id": number,
+            "user_id": number,
+            "name": "string",
+            "balance": number,
+            "created_at": "date"
+        },
+        {
+            "id": number,
+            "user_id": number,
+            "name": "Bank string",
+            "balance": number,
+            "created_at": "date"
+        }
+      ]
     ]
   }
   ```
@@ -207,8 +220,8 @@
 - **Success Response**:
   ```json
   {
-    "name": "Wallet Name",
-    "balance": 0
+    "name": "string",
+    "balance": number
   }
   ```
 
@@ -267,14 +280,15 @@
 - **Endpoint**: `/transactions/:transaction_id`
 - **Method**: `GET`
 - **Success Response**:
+
   ```json
   {
     {
-        "transaction_date": "12 Januari 2025",
-        "amount": 100000,
-        "category_name": "Transport",
-        "wallet_name": "Cash",
-        "description": "Go To Work"
+        "transaction_date": "string",
+        "amount": number,
+        "category_name": "string",
+        "wallet_name": "string",
+        "description": "string"
     }
   }
 
@@ -333,10 +347,10 @@
   {
     "monthlyTransaction": [
       {
-        "month": "2025-01",
-        "total_income": 1000000,
-        "total_expense": 100000,
-        "net_balance": 900000
+        "month": "date",
+        "total_income": number,
+        "total_expense": number,
+        "net_balance": number
       }
     ]
   }
@@ -346,7 +360,7 @@
 
 ## Category Management
 
-### Get Categories
+### Get User Categories
 
 - **Endpoint**: `/categories/:type`
 - **Method**: `GET`
@@ -354,22 +368,29 @@
 - **Success Response**:
   ```json
   {
-    "categories": []
+    "userCategories": [
+        {
+            "id": number,
+            "name": "string",
+            "type": "string"
+        },
+        {
+            "id": number,
+            "name": "string",
+            "type": "string"
+        },
+    ]
   }
   ```
 
-### Get Categories Detail
+### Get Category Detail
 
 - **Endpoint**: `/categories/:category_id`
 - **Method**: `GET`
 - **Success Response**:
   ```json
   {
-    "result": [
-      {
-        "name": "JajanBaru"
-      }
-    ]
+    "name": "Transport"
   }
   ```
 
@@ -424,11 +445,15 @@
 - **Success Response**:
   ```json
   {
-    "category_id": "",
-    "category_name": "",
-    "limit_amount": "",
-    "total_amount": "",
-    "remaining_budget": ""
+    "budgets": [
+        {
+            "category_id": number,
+            "category_name": "string",
+            "limit_amount": number,
+            "total_amount": number,
+            "remaining_budget": number
+        }
+    ]
   }
   ```
 
@@ -439,11 +464,22 @@
 - **Success Response**:
   ```json
   {
-    "category_id": "",
-    "category_name": "",
-    "limit_amount": "",
-    "total_amount": "",
-    "remaining_budget": ""
+    "budgets": [
+        {
+            "category_id": number,
+            "category_name": "string",
+            "limit_amount": number,
+            "total_amount": number,
+            "remaining_budget": number
+        },
+        {
+            "category_id": number,
+            "category_name": "string",
+            "limit_amount": number,
+            "total_amount": number,
+            "remaining_budget": number
+        }
+    ]
   }
   ```
 
@@ -454,11 +490,22 @@
 - **Success Response**:
   ```json
   {
-    "category_id": "",
-    "category_name": "",
-    "limit_amount": "",
-    "total_amount": "",
-    "remaining_budget": ""
+    "budgets": [
+        {
+            "category_id": number,
+            "category_name": "string",
+            "limit_amount": number,
+            "total_amount": number,
+            "remaining_budget": number
+        },
+        {
+            "category_id": number,
+            "category_name": "string",
+            "limit_amount": number,
+            "total_amount": number,
+            "remaining_budget": number
+        }
+    ]
   }
   ```
 
