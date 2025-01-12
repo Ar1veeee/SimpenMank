@@ -6,11 +6,22 @@ const walletRoutes = require("./routes/walletRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const transactionRoutes = require("./routes/trasactionsRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");
+const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 require("./config/passport");
 require("dotenv").config();
 
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100, 
+});
+
+app.use(limiter);
+app.use(cors());
+app.use(helmet());
 app.use(express.json());
 
 app.use("/auth", userRoutes);
