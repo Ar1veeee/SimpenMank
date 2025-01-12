@@ -92,9 +92,32 @@ const verifyWalletOwnership = async (req, res, next) => {
   }
 };
 
+const verifyProfileOwnership = async (req, res, next) => {  
+  const user_id = req.user.id;
+
+  try {
+    const [profile] = await db.query(
+      "SELECT * FROM users WHERE id = ?",
+      [user_id]
+    );
+
+    if (!profile) {
+      return res
+        .status(404)
+        .json({ error: "Profile not found or not authorized to access" });
+    }
+
+    next();
+  } catch (error) {
+    console.error("Error checking profile ownership:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   verifyTransactionOwnership,
   verifyGoalOwnership,
   verifyCategoryOwnership,
   verifyWalletOwnership,
+  verifyProfileOwnership
 };
