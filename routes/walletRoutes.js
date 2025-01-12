@@ -1,5 +1,8 @@
 const express = require("express");
 const verifyToken = require("../middlewares/authMiddlewares");
+const {
+  verifyWalletOwnership,
+} = require("../middlewares/userMiddlewares");
 const router = express.Router();
 const {
   showWallet,
@@ -9,9 +12,12 @@ const {
   DeleteWallet,
 } = require("../controllers/walletController");
 
+const verifyUser = verifyWalletOwnership;
+
 router.use(verifyToken);
-router.get("/all/:user_id/", showWallet);
-router.post("/:user_id", addingWallet);
+router.use(verifyUser);
+router.get("/", showWallet);
+router.post("/", addingWallet);
 router.get("/:wallet_id", WalletDetail);
 router.put("/:wallet_id", UpdateWallet);
 router.delete("/:wallet_id", DeleteWallet);

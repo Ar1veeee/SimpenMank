@@ -8,7 +8,7 @@ const {
 const { findUserById } = require("../models/usersModel");
 
 const showWallet = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user.id;
   if (!user_id) {
     return res.status(400).json({
       message: "User ID is required",
@@ -24,7 +24,7 @@ const showWallet = async (req, res) => {
     }
 
     const wallets = await getUserWallet(user_id);
-    res.status(200).json({ wallets });
+    res.status(200).json(wallets);
   } catch (error) {
     console.error("Error fetching wallets:", error);
     res.status(500).json({
@@ -35,17 +35,24 @@ const showWallet = async (req, res) => {
 
 const WalletDetail = async (req, res) => {
   const { wallet_id } = req.params;
+  const user_id = req.user.id;
 
   if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
   try {
-    const result = await getWalletDetail(wallet_id);
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    const result = await getWalletDetail(user_id, wallet_id);
     if (result && result.balance) {
       result.balance = Number(result.balance);
     }
 
-    res.status(200).json({ result });
+    res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching wallet detail:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -53,7 +60,7 @@ const WalletDetail = async (req, res) => {
 };
 
 const addingWallet = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user.id;
   const { name, balance } = req.body;
 
   if (!user_id) {
@@ -89,6 +96,8 @@ const addingWallet = async (req, res) => {
 
 const UpdateWallet = async (req, res) => {
   const { wallet_id } = req.params;
+  const user_id = req.user.id;
+
   const { wallet_name, balance } = req.body;
 
   if (!wallet_id) {
@@ -100,15 +109,19 @@ const UpdateWallet = async (req, res) => {
   }
 
   if (isNaN(balance) || balance < 0) {
-    return res
-      .status(400)
-      .json({
-        message: "Balance must be a valid number and cannot be negative",
-      });
+    return res.status(400).json({
+      message: "Balance must be a valid number and cannot be negative",
+    });
   }
 
   try {
-    await updateUserWallet(wallet_id, wallet_name, balance);
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    await updateUserWallet(user_id, wallet_id, wallet_name, balance);
     res.status(200).json({ message: "Wallet update successfully" });
   } catch (error) {
     console.error("Error update wallet", error);
@@ -118,11 +131,18 @@ const UpdateWallet = async (req, res) => {
 
 const DeleteWallet = async (req, res) => {
   const { wallet_id } = req.params;
+  const user_id = req.user.id;
   if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
   try {
-    const result = await deleteUserWallet(wallet_id);
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    const result = await deleteUserWallet(user_id, wallet_id);
     if (!result) {
       return res.status(400).json({ message: "Wallet not found" });
     }

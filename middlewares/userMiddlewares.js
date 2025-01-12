@@ -69,8 +69,32 @@ const verifyCategoryOwnership = async (req, res, next) => {
   }
 };
 
+const verifyWalletOwnership = async (req, res, next) => {
+  const { wallet_id } = req.params;
+  const user_id = req.user.id;
+
+  try {
+    const [wallet] = await db.query(
+      "SELECT * FROM wallets WHERE id = ? AND user_id = ?",
+      [wallet_id, user_id]
+    );
+
+    if (!wallet) {
+      return res
+        .status(404)
+        .json({ error: "Wallet not found or not authorized to access" });
+    }
+
+    next();
+  } catch (error) {
+    console.error("Error checking category ownership:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   verifyTransactionOwnership,
   verifyGoalOwnership,
   verifyCategoryOwnership,
+  verifyWalletOwnership,
 };
