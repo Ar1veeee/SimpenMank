@@ -5,7 +5,20 @@ const getUserWallet = async (user_id) => {
     const [rows] = await db.query("SELECT * FROM wallets WHERE user_id = ?", [
       user_id,
     ]);
-    return rows.map((row) => ({ ...row, balance: Number(row.balance) }));
+    return rows.map((row) => ({ 
+      ...row, 
+      balance: Number(row.balance),
+      created_at: row.created_at
+        ? new Date(row.created_at).toLocaleString("id-ID", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          })
+        : null,
+     }));
   } catch (error) {
     console.error("Error fetching wallet list:", error);
     throw error;

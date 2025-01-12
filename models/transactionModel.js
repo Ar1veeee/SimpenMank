@@ -1,8 +1,9 @@
 const db = require("../config/db");
 
 const getUserTransactions = async (user_id) => {
-  const [rows] = await db.query(
-    `
+  try {
+    const [rows] = await db.query(
+      `
     SELECT 
       t.id as transaction_id,
       t.transaction_date, 
@@ -15,9 +16,20 @@ const getUserTransactions = async (user_id) => {
     JOIN wallets w ON t.wallet_id = w.id
     WHERE t.user_id = ?
     `,
-    [user_id]
-  );
-  return rows;
+      [user_id]
+    );
+    return rows.map((row) => ({ 
+      ...row, 
+      amount: Number(row.amount),
+      transaction_date: row.transaction_date
+        ? new Date(row.transaction_date).toLocaleString("id-ID", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        : null,
+     }));
+  } catch (error) {}
 };
 
 const getMonthlyReport = async (user_id) => {
