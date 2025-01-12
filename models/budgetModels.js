@@ -25,12 +25,12 @@ const budgetList = async (user_id, period) => {
   const { startDate, endDate } = getDateRange(period);
   try {
     const [rows] = await db.query(
-      `SELECT 
+      `SELECT           
           c.id AS category_id,
           c.name AS category_name,
-          c.limit_amount,
+          c.limit_amount,          
           SUM(t.amount) as total_amount,
-        COALESCE(c.limit_amount - SUM(t.amount), c.limit_amount) AS remaining_budget
+        COALESCE(c.limit_amount - SUM(t.amount), c.limit_amount) AS remaining_budget        
         FROM categories c
         LEFT JOIN transactions t 
           ON c.id = t.category_id 
@@ -53,14 +53,14 @@ const budgetList = async (user_id, period) => {
   }
 };
 
-const editLimitAmount = async (category_id, limit_amount) => {
+const editLimitAmount = async (user_id, category_id, limit_amount) => {
   let connection;
   try {
     connection = await db.getConnection();
     await connection.beginTransaction();
     const [result] = await connection.query(
-      "UPDATE categories SET limit_amount = ? WHERE id = ?",
-      [limit_amount, category_id]
+      "UPDATE categories SET limit_amount = ? WHERE user_id = ? AND id = ?",
+      [limit_amount, user_id, category_id]
     );
 
     if (result.affectedRows === 0) {
