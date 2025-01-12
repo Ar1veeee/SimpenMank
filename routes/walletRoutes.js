@@ -19,7 +19,7 @@ router.use(verifyUser);
 router.get("/", showWallet);
 router.post("/", addingWallet);
 router.get("/:wallet_id", WalletDetail);
-router.put("/:wallet_id", UpdateWallet);
+router.patch("/:wallet_id", UpdateWallet);
 router.delete("/:wallet_id", DeleteWallet);
 
 module.exports = router;
