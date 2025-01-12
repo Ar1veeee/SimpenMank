@@ -150,23 +150,23 @@
 
 ### Get Profile
 
-- **Endpoint**: `/profile/:user_id`
+- **Endpoint**: `/profile`
 - **Method**: `GET`
 - **Success Response**:
   ```json
   {
     "Profile": {
-      "UserID": "string",
+      "user_id": "string",
       "Username": "string",
       "Email": "string",
-      "Method": "string"
+      "auth_method": "string"
     }
   }
   ```
 
 ### Update Password
 
-- **Endpoint**: `/profile/:user_id/password`
+- **Endpoint**: `/profile/password`
 - **Method**: `PUT`
 - **Request Body**:
   ```json
@@ -187,15 +187,14 @@
 
 ### Show Wallets
 
-- **Endpoint**: `/wallet/all/:user_id`
+- **Endpoint**: `/wallet/`
 - **Method**: `GET`
 - **Success Response**:
   ```json
   {
     "wallets": [
       {
-        "user_wallets": [],
-        "default_wallets": []
+        "user_wallets"
       }
     ]
   }
@@ -208,21 +207,19 @@
 - **Success Response**:
   ```json
   {
-    "result": {
-      "name": "",
-      "balance":
-  }
+    "name": "Wallet Name",
+    "balance": 0
   }
   ```
 
 ### Add Wallet
 
-- **Endpoint**: `/wallet/:user_id`
+- **Endpoint**: `/wallet`
 - **Method**: `POST`
 - **Request Body**:
   ```json
   {
-    "name": "string",
+    "wallet_name": "string",
     "balance": number
   }
   ```
@@ -236,12 +233,11 @@
 ### Edit Wallet
 
 - **Endpoint**: `/wallet/:wallet_id`
-- **Method**: `PUT`
+- **Method**: `PATCH`
 - **Request Body**:
   ```json
   {
-    "wallet_name": "string",
-    "balance": number
+    "wallet_name": "string"
   }
   ```
 - **Success Response**:
@@ -257,7 +253,7 @@
 
 ### Get All Transactions
 
-- **Endpoint**: `/transactions/:user_id`
+- **Endpoint**: `/transactions`
 - **Method**: `GET`
 - **Success Response**:
   ```json
@@ -268,18 +264,25 @@
 
 ### Get Transaction Details
 
-- **Endpoint**: `/transactions/:user_id/:transaction_id`
+- **Endpoint**: `/transactions/:transaction_id`
 - **Method**: `GET`
 - **Success Response**:
   ```json
   {
-    "transactionDetail": {}
+    {
+        "transaction_date": "12 Januari 2025",
+        "amount": 100000,
+        "category_name": "Transport",
+        "wallet_name": "Cash",
+        "description": "Go To Work"
+    }
   }
+
   ```
 
 ### Add Income Transaction
 
-- **Endpoint**: `/transactions/:user_id/income`
+- **Endpoint**: `/transactions/income`
 - **Method**: `POST`
 - **Request Body**:
   ```json
@@ -294,13 +297,13 @@
 
 ### Add Expense Transaction
 
-- **Endpoint**: `/transactions/:user_id/expense`
+- **Endpoint**: `/transactions/expense`
 - **Method**: `POST`
 - **Request Body**: Same as Income Transaction.
 
 ### Update Transaction
 
-- **Endpoint**: `/transactions/:user_id/:transaction_id/income` or `/expense`
+- **Endpoint**: `/transactions/:transaction_id/income` or `/expense`
 - **Method**: `PUT`
 - **Request Body**: Same as Add Transaction.
 - **Success Response**:
@@ -312,7 +315,7 @@
 
 ### Delete Transaction
 
-- **Endpoint**: `/transactions/:user_id/:transaction_id`
+- **Endpoint**: `/transactions/:transaction_id`
 - **Method**: `DELETE`
 - **Success Response**:
   ```json
@@ -323,12 +326,12 @@
 
 ### Monthly Reports
 
-- **Endpoint**: `/transactions/:user_id/monthly`
+- **Endpoint**: `/transactions/monthly`
 - **Method**: `GET`
 - **Success Response**:
   ```json
   {
-    "data": [
+    "monthlyTransaction": [
       {
         "month": "2025-01",
         "total_income": 1000000,
@@ -345,7 +348,7 @@
 
 ### Get Categories
 
-- **Endpoint**: `/categories/:user_id/:type`
+- **Endpoint**: `/categories/:type`
 - **Method**: `GET`
 - **Parameters**: `type`: "income" or "expense"
 - **Success Response**:
@@ -372,18 +375,18 @@
 
 ### Add Income Category
 
-- **Endpoint**: `/categories/:user_id/income`
+- **Endpoint**: `/categories/income`
 - **Method**: `POST`
 - **Request Body**:
   ```json
   {
-    "name": "string"
+    "category_name": "string"
   }
   ```
 
 ### Add Expense Category
 
-- **Endpoint**: `/categories/:user_id/expense`
+- **Endpoint**: `/categories/expense`
 - **Method**: `POST`
 - **Request Body**: Same as Income Category.
 - **Success Response**:
@@ -416,7 +419,7 @@
 
 ### Weekly Report
 
-- **Endpoint**: `/:user_id/weekly`
+- **Endpoint**: `/weekly`
 - **Method**: `GET`
 - **Success Response**:
   ```json
@@ -425,12 +428,13 @@
     "category_name": "",
     "limit_amount": "",
     "total_amount": "",
-    "remaining_budget": "",
+    "remaining_budget": ""
   }
   ```
+
 ### Monthly Report
 
-- **Endpoint**: `/:user_id/monthly`
+- **Endpoint**: `/monthly`
 - **Method**: `GET`
 - **Success Response**:
   ```json
@@ -439,12 +443,13 @@
     "category_name": "",
     "limit_amount": "",
     "total_amount": "",
-    "remaining_budget": "",
+    "remaining_budget": ""
   }
   ```
+
 ### Annually Report
 
-- **Endpoint**: `/:user_id/annually`
+- **Endpoint**: `/annually`
 - **Method**: `GET`
 - **Success Response**:
   ```json
@@ -453,7 +458,7 @@
     "category_name": "",
     "limit_amount": "",
     "total_amount": "",
-    "remaining_budget": "",
+    "remaining_budget": ""
   }
   ```
 
@@ -470,10 +475,11 @@
 - **Success Response**:
   ```json
   {
-    "message": "Limit Amount successfully set"   
+    "message": "Limit Amount successfully set"
   }
   ```
-----
+
+---
 
 ## System Health
 
