@@ -11,7 +11,7 @@ const { getWalletIdByName } = require("../models/walletModel");
 const { findUserById } = require("../models/usersModel");
 
 const Transactions = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user.id;
   if (!user_id) {
     return res.status(400).json({ message: "User ID is required" });
   }
@@ -94,7 +94,8 @@ const TransactionDetail = async (req, res) => {
 };
 
 const handleTransaction = async (req, res, type) => {
-  const { user_id } = req.params;
+  const user_id = req.user.id;
+
   const { wallet_name, category_name, transaction_date, amount, description } =
     req.body;
 
@@ -107,15 +108,10 @@ const handleTransaction = async (req, res, type) => {
   }
 
   try {
-    const [user, wallet_id, category_id] = await Promise.all([
-      findUserById(user_id),
+    const [wallet_id, category_id] = await Promise.all([
       getWalletIdByName(wallet_name),
       getCategoryIdByName(category_name),
     ]);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
 
     if (!wallet_id) {
       return res.status(400).json({ message: "Wallet not found in database" });
@@ -172,7 +168,8 @@ const deleteTransaction = async (req, res) => {
 };
 
 const MonthlyReports = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user.id;
+
   if (!user_id) {
     return res.status(400).json({ message: "User ID is required" });
   }

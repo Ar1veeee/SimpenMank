@@ -1,6 +1,8 @@
 const express = require("express");
 const verifyToken = require("../middlewares/authMiddlewares");
-const verifyUser = require("../middlewares/transactionMiddlewares");
+const {
+  verifyTransactionOwnership,
+} = require("../middlewares/userMiddlewares");
 const router = express.Router();
 const {
   Transactions,
@@ -13,16 +15,19 @@ const {
   MonthlyReports,
 } = require("../controllers/transactionController");
 
+const verifyUser = verifyTransactionOwnership;
+
 router.use(verifyToken);
-router.get("/:user_id", Transactions);
-router.post("/:user_id/income", IncomeTransaction);
-router.post("/:user_id/expense", ExpenseTransaction);
-router.get("/:user_id/monthly", MonthlyReports);
+router.use(verifyUser);
+router.get("/", Transactions);
+router.post("/income", IncomeTransaction);
+router.post("/expense", ExpenseTransaction);
+router.get("/monthly", MonthlyReports);
 
-router.delete("/:transaction_id",verifyUser, deleteTransaction);
-router.get("/:transaction_id/details", verifyUser, TransactionDetail);
+router.delete("/:transaction_id", deleteTransaction);
 
-router.put("/:transaction_id/income",verifyUser, UpdateIncome);
-router.put("/:transaction_id/expense",verifyUser, UpdateExpense);
+router.get("/:transaction_id/details", TransactionDetail);
+router.put("/:transaction_id/income", UpdateIncome);
+router.put("/:transaction_id/expense", UpdateExpense);
 
 module.exports = router;

@@ -4,7 +4,7 @@ const {
   addIncomeCategory,
   addExpenseCategory,
   editCategoryName,
-  deleteUserCategory,  
+  deleteUserCategory,
 } = require("../models/categoryModel");
 
 const handleErrorResponse = (res, error, message) => {
@@ -21,7 +21,9 @@ const validateRequestBody = (res, field, fieldName) => {
 };
 
 const Categories = async (req, res) => {
-  const { user_id, type } = req.params;
+  const { type } = req.params;
+  const user_id = req.user.id;
+
   if (!user_id || !type) {
     return res.status(404).json({ message: "User ID and Type Is Required" });
   }
@@ -35,18 +37,18 @@ const Categories = async (req, res) => {
 
 const CategoryDetail = async (req, res) => {
   const { category_id } = req.params;
+  const user_id = req.user.id;
+
   if (!category_id) {
-    return res
-      .status(404)
-      .json({ message: "Category ID Is Required" });
+    return res.status(404).json({ message: "Category ID Is Required" });
   }
 
   try {
-    const result = await getCategoryDetail(category_id);
+    const result = await getCategoryDetail(user_id, category_id);
     if (!result) {
       return res.status(404).json({ message: "Category Not Found" });
     }
-    res.status(200).json({ result });
+    res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching category detail:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -54,7 +56,7 @@ const CategoryDetail = async (req, res) => {
 };
 
 const IncomeCategory = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user.id;
   const { name } = req.body;
   if (!validateRequestBody(res, name, "Category Name")) return;
   try {
@@ -66,7 +68,7 @@ const IncomeCategory = async (req, res) => {
 };
 
 const ExpenseCategory = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user.id;
   const { name } = req.body;
 
   if (!validateRequestBody(res, name, "Category Name")) return;
@@ -81,6 +83,7 @@ const ExpenseCategory = async (req, res) => {
 
 const UpdateCategory = async (req, res) => {
   const { category_id } = req.params;
+  const user_id = req.user.id;
   const { category_name } = req.body;
 
   if (!category_id) {
@@ -94,7 +97,7 @@ const UpdateCategory = async (req, res) => {
   }
 
   try {
-    await editCategoryName(category_id, category_name);
+    await editCategoryName(user_id, category_id, category_name);
     res.status(200).json({ message: "Category successfully updated" });
   } catch (error) {
     console.error("Error update category:", error);
@@ -104,11 +107,12 @@ const UpdateCategory = async (req, res) => {
 
 const DeleteCategory = async (req, res) => {
   const { category_id } = req.params;
+  const user_id = req.user.id;
   if (!category_id) {
     return res.status(400).json({ message: "Category ID is required" });
   }
   try {
-    const result = await deleteUserCategory(category_id);
+    const result = await deleteUserCategory(user_id, category_id);
     if (!result) {
       return res.status(400).json({ message: "Category not found" });
     }
@@ -126,5 +130,5 @@ module.exports = {
   ExpenseCategory,
   CategoryDetail,
   UpdateCategory,
-  DeleteCategory,  
+  DeleteCategory,
 };
