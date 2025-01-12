@@ -28,6 +28,10 @@ const Categories = async (req, res) => {
     return res.status(404).json({ message: "User ID and Type Is Required" });
   }
   try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
     const userCategories = await getUserCategory(user_id, type);
     res.status(200).json({ userCategories });
   } catch (error) {
@@ -44,6 +48,10 @@ const CategoryDetail = async (req, res) => {
   }
 
   try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
     const result = await getCategoryDetail(user_id, category_id);
     if (!result) {
       return res.status(404).json({ message: "Category Not Found" });
@@ -60,6 +68,10 @@ const IncomeCategory = async (req, res) => {
   const { name } = req.body;
   if (!validateRequestBody(res, name, "Category Name")) return;
   try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
     await addIncomeCategory(user_id, name);
     res.status(201).json({ message: "Income category successfully added" });
   } catch (error) {
@@ -74,6 +86,10 @@ const ExpenseCategory = async (req, res) => {
   if (!validateRequestBody(res, name, "Category Name")) return;
 
   try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
     await addExpenseCategory(user_id, name);
     res.status(201).json({ message: "Expense category successfully added" });
   } catch (error) {
@@ -97,6 +113,10 @@ const UpdateCategory = async (req, res) => {
   }
 
   try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
     await editCategoryName(user_id, category_id, category_name);
     res.status(200).json({ message: "Category successfully updated" });
   } catch (error) {
@@ -112,6 +132,10 @@ const DeleteCategory = async (req, res) => {
     return res.status(400).json({ message: "Category ID is required" });
   }
   try {
+    const user = await findUserById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
     const result = await deleteUserCategory(user_id, category_id);
     if (!result) {
       return res.status(400).json({ message: "Category not found" });
