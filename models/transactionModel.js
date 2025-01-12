@@ -128,7 +128,7 @@ const getTransactionDetail = async (user_id, transaction_id) => {
     `,
     [user_id, transaction_id]
   );
-  return rows;
+  return rows[0];
 };
 
 const addTransaction = async (

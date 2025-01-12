@@ -1,5 +1,6 @@
 const express = require("express");
 const verifyToken = require("../middlewares/authMiddlewares");
+const verifyUser = require("../middlewares/transactionMiddlewares");
 const router = express.Router();
 const {
   Transactions,
@@ -17,9 +18,11 @@ router.get("/:user_id", Transactions);
 router.post("/:user_id/income", IncomeTransaction);
 router.post("/:user_id/expense", ExpenseTransaction);
 router.get("/:user_id/monthly", MonthlyReports);
-router.put("/:user_id/:transaction_id/income", UpdateIncome);
-router.put("/:user_id/:transaction_id/expense", UpdateExpense);
-router.delete("/:user_id/:transaction_id", deleteTransaction);
-router.get("/:user_id/:transaction_id", TransactionDetail);
+
+router.delete("/:transaction_id",verifyUser, deleteTransaction);
+router.get("/:transaction_id/details", verifyUser, TransactionDetail);
+
+router.put("/:transaction_id/income",verifyUser, UpdateIncome);
+router.put("/:transaction_id/expense",verifyUser, UpdateExpense);
 
 module.exports = router;

@@ -29,14 +29,13 @@ const Transactions = async (req, res) => {
 };
 
 const UpdateTransaction = async (req, res, type) => {
-  const { user_id, transaction_id } = req.params;
+  const { transaction_id } = req.params;
+  const user_id = req.user.id;
   const { wallet_name, category_name, transaction_date, amount, description } =
     req.body;
 
-  if (!user_id || !transaction_id) {
-    return res
-      .status(400)
-      .json({ message: "User ID & Transaction ID is required" });
+  if (!transaction_id) {
+    return res.status(400).json({ message: "Transaction ID is required" });
   }
 
   if (!transaction_date || !amount || !category_name || !wallet_name) {
@@ -44,14 +43,10 @@ const UpdateTransaction = async (req, res, type) => {
   }
 
   try {
-    const [user, wallet_id, category_id] = await Promise.all([
-      findUserById(user_id),
+    const [wallet_id, category_id] = await Promise.all([
       getWalletIdByName(wallet_name),
       getCategoryIdByName(category_name),
     ]);
-    if (!user) {
-      return res.status(404).json({ message: "User ID not found" });
-    }
 
     if (!wallet_id) {
       return res.status(400).json({ message: "Wallet not found in database" });
@@ -84,19 +79,13 @@ const UpdateIncome = (req, res) => UpdateTransaction(req, res, "income");
 const UpdateExpense = (req, res) => UpdateTransaction(req, res, "expense");
 
 const TransactionDetail = async (req, res) => {
-  const { user_id, transaction_id } = req.params;
-  if (!user_id || !transaction_id) {
-    return res.status(400).json({ message: "Missing required fields" });
+  const { transaction_id } = req.params;
+  const user_id = req.user.id;
+  if (!transaction_id) {
+    return res.status(400).json({ message: "Transaction ID is required" });
   }
   try {
-    const user = await findUserById(user_id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const result = await getTransactionDetail(
-      user_id,
-      transaction_id
-    );
+    const result = await getTransactionDetail(user_id, transaction_id);
     res.status(200).json({ result });
   } catch (error) {
     console.error("Error fetching transaction detail:", error);
@@ -160,11 +149,12 @@ const IncomeTransaction = (req, res) => handleTransaction(req, res, "income");
 const ExpenseTransaction = (req, res) => handleTransaction(req, res, "expense");
 
 const deleteTransaction = async (req, res) => {
-  const { user_id, transaction_id } = req.params;
-  if (!user_id || !transaction_id) {
+  const { transaction_id } = req.params;
+  const user_id = req.user.id;
+  if (!transaction_id) {
     return res
       .status(400)
-      .json({ message: "User ID & Transaction ID is required" });
+      .json({ message: "Transaction ID is required" });
   }
 
   try {
@@ -174,9 +164,7 @@ const deleteTransaction = async (req, res) => {
       return res.status(400).json({ message: "Transaction not found" });
     }
 
-    res
-      .status(200)
-      .json({ message: "Transaction successfully deleted" });
+    res.status(200).json({ message: "Transaction successfully deleted" });
   } catch (error) {
     console.error("Error deleting transaction:", error);
     res.status(500).json({ message: "Internal Server Error" });
