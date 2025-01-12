@@ -61,7 +61,7 @@ const WalletDetail = async (req, res) => {
 
 const addingWallet = async (req, res) => {
   const user_id = req.user.id;
-  const { name, balance } = req.body;
+  const { wallet_name } = req.body;
 
   if (!user_id) {
     return res.status(400).json({
@@ -69,7 +69,7 @@ const addingWallet = async (req, res) => {
     });
   }
 
-  if (!name || balance === undefined) {
+  if (!wallet_name) {
     return res.status(400).json({
       message: "Missing required fields",
     });
@@ -84,7 +84,7 @@ const addingWallet = async (req, res) => {
       });
     }
 
-    await addWallet(user_id, name, balance);
+    await addWallet(user_id, wallet_name);
     res.status(201).json({ message: "Wallet successfully added" });
   } catch (error) {
     console.error("Error adding wallet:", error);
