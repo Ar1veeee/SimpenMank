@@ -86,7 +86,7 @@ const TransactionDetail = async (req, res) => {
   }
   try {
     const result = await getTransactionDetail(user_id, transaction_id);
-    res.status(200).json({ result });
+    res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching transaction detail:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -148,9 +148,7 @@ const deleteTransaction = async (req, res) => {
   const { transaction_id } = req.params;
   const user_id = req.user.id;
   if (!transaction_id) {
-    return res
-      .status(400)
-      .json({ message: "Transaction ID is required" });
+    return res.status(400).json({ message: "Transaction ID is required" });
   }
 
   try {

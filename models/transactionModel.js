@@ -4,6 +4,7 @@ const getUserTransactions = async (user_id) => {
   const [rows] = await db.query(
     `
     SELECT 
+      t.id as transaction_id,
       t.transaction_date, 
       t.amount, 
       c.name AS category_name, 
@@ -97,6 +98,8 @@ const updateUserTransactions = async (
       [transaction_id]
     );
 
+    await updateWalletBalancesForWallet(connection, wallet_id);
+
     await connection.commit();
     return updateTransaction[0];
   } catch (error) {
@@ -158,22 +161,12 @@ const addTransaction = async (
       ]
     );
 
-    if (type === "income") {
-      await connection.query(
-        "UPDATE wallets SET balance = IFNULL(balance, 0) + ? WHERE id = ?",
-        [amount, wallet_id]
-      );
-    } else if (type === "expense") {      
-      await connection.query(
-        "UPDATE wallets SET balance = IFNULL(balance, 0) - ? WHERE id = ?",
-        [amount, wallet_id]
-      );
-    }
-
     const [newTransaction] = await connection.query(
       "SELECT * FROM transactions WHERE id = ?",
       [result.insertId]
     );
+
+    await updateWalletBalancesForWallet(connection, wallet_id);
 
     await connection.commit();
     return newTransaction[0];
@@ -187,6 +180,28 @@ const addTransaction = async (
     if (connection) {
       connection.release();
     }
+  }
+};
+
+const updateWalletBalancesForWallet = async (connection, wallet_id) => {
+  const [balance] = await connection.query(
+    `SELECT 
+        wallet_id,
+        (SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) - 
+         SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END)) AS net_balance
+    FROM transactions
+    WHERE wallet_id = ?
+    GROUP BY wallet_id`,
+    [wallet_id]
+  );
+
+  if (balance.length > 0) {
+    await connection.query(
+      `UPDATE wallets 
+       SET balance = ? 
+       WHERE id = ?`,
+      [balance[0].net_balance, wallet_id]
+    );
   }
 };
 
