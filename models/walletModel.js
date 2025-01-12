@@ -43,14 +43,14 @@ const getWalletDetail = async (user_id, wallet_id) => {
   }
 };
 
-const addWallet = async (user_id, name, balance) => {
+const addWallet = async (user_id, name) => {
   try {
     const connection = await db.getConnection();
     await connection.beginTransaction();
 
     const [result] = await connection.query(
-      "INSERT INTO wallets (user_id, name, balance) VALUES (?,?,?)",
-      [user_id, name, balance]
+      "INSERT INTO wallets (user_id, name) VALUES (?,?)",
+      [user_id, name]
     );
 
     const [newWallet] = await connection.query(
