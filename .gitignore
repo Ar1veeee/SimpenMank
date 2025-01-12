@@ -1,3 +1,6 @@
 node_modules/
 .env
 ngrok.exe
+services/simpenmank-firebase-adminsdk-2cjcj-185b53cb20.json
+token.html
+routes/firebaseTestRoutes.js

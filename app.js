@@ -11,7 +11,6 @@ const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 require("./config/passport");
-require("dotenv").config();
 
 const app = express();
 

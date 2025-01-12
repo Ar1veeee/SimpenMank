@@ -1,7 +1,7 @@
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 const passport = require("passport");
 const { findOrCreateUser, findUserById } = require("../models/usersModel");
-require("dotenv").config();
+require("dotenv-safe").config();
 
 const { WEB_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } =
   process.env;

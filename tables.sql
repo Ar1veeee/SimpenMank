@@ -12,7 +12,8 @@ CREATE TABLE `users` (
 CREATE TABLE `categories` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,  
     `user_id` INT NULL,
-    `name` VARCHAR(255) NOT NULL,     
+    `name` VARCHAR(255) NOT NULL,  
+    `limit_amount`DECIMAL(15,2) NOT NULL DEFAULT 0.00,
     `type` ENUM('income', 'expense') NOT NULL, 
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
