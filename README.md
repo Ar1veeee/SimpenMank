@@ -193,22 +193,20 @@
   ```json
   {
     "wallets": [
-      "wallets": [
-        {
-            "id": number,
-            "user_id": number,
-            "name": "string",
-            "balance": number,
-            "created_at": "date"
-        },
-        {
-            "id": number,
-            "user_id": number,
-            "name": "Bank string",
-            "balance": number,
-            "created_at": "date"
-        }
-      ]
+      {
+        "id": "number",
+        "user_id": "number",
+        "name": "string",
+        "balance": "number",
+        "created_at": "date"
+      },
+      {
+        "id": "number",
+        "user_id": "number",
+        "name": "Bank string",
+        "balance": "number",
+        "created_at": "date"
+      }
     ]
   }
   ```
@@ -221,7 +219,7 @@
   ```json
   {
     "name": "string",
-    "balance": number
+    "balance": "number"
   }
   ```
 
@@ -233,7 +231,7 @@
   ```json
   {
     "wallet_name": "string",
-    "balance": number
+    "balance": "number"
   }
   ```
 - **Success Response**:
@@ -285,7 +283,7 @@
   {
     {
         "transaction_date": "string",
-        "amount": number,
+        "amount": "number",
         "category_name": "string",
         "wallet_name": "string",
         "description": "string"
@@ -304,7 +302,7 @@
     "wallet_name": "string",
     "category_name": "string",
     "transaction_date": "date",
-    "amount": number,
+    "amount": "number",
     "description": "string"
   }
   ```
@@ -348,9 +346,9 @@
     "monthlyTransaction": [
       {
         "month": "date",
-        "total_income": number,
-        "total_expense": number,
-        "net_balance": number
+        "total_income": "number",
+        "total_expense": "number",
+        "net_balance": "number"
       }
     ]
   }
@@ -369,16 +367,16 @@
   ```json
   {
     "userCategories": [
-        {
-            "id": number,
-            "name": "string",
-            "type": "string"
-        },
-        {
-            "id": number,
-            "name": "string",
-            "type": "string"
-        },
+      {
+        "id": "number",
+        "name": "string",
+        "type": "string"
+      },
+      {
+        "id": "number",
+        "name": "string",
+        "type": "string"
+      }
     ]
   }
   ```
@@ -446,13 +444,13 @@
   ```json
   {
     "budgets": [
-        {
-            "category_id": number,
-            "category_name": "string",
-            "limit_amount": number,
-            "total_amount": number,
-            "remaining_budget": number
-        }
+      {
+        "category_id": "number",
+        "category_name": "string",
+        "limit_amount": "number",
+        "total_amount": "number",
+        "remaining_budget": "number"
+      }
     ]
   }
   ```
@@ -465,20 +463,20 @@
   ```json
   {
     "budgets": [
-        {
-            "category_id": number,
-            "category_name": "string",
-            "limit_amount": number,
-            "total_amount": number,
-            "remaining_budget": number
-        },
-        {
-            "category_id": number,
-            "category_name": "string",
-            "limit_amount": number,
-            "total_amount": number,
-            "remaining_budget": number
-        }
+      {
+        "category_id": "number",
+        "category_name": "string",
+        "limit_amount": "number",
+        "total_amount": "number",
+        "remaining_budget": "number"
+      },
+      {
+        "category_id": "number",
+        "category_name": "string",
+        "limit_amount": "number",
+        "total_amount": "number",
+        "remaining_budget": "number"
+      }
     ]
   }
   ```
@@ -491,20 +489,20 @@
   ```json
   {
     "budgets": [
-        {
-            "category_id": number,
-            "category_name": "string",
-            "limit_amount": number,
-            "total_amount": number,
-            "remaining_budget": number
-        },
-        {
-            "category_id": number,
-            "category_name": "string",
-            "limit_amount": number,
-            "total_amount": number,
-            "remaining_budget": number
-        }
+      {
+        "category_id": "number",
+        "category_name": "string",
+        "limit_amount": "number",
+        "total_amount": "number",
+        "remaining_budget": "number"
+      },
+      {
+        "category_id": "number",
+        "category_name": "string",
+        "limit_amount": "number",
+        "total_amount": "number",
+        "remaining_budget": "number"
+      }
     ]
   }
   ```
@@ -516,7 +514,7 @@
 - **Request Body**:
   ```json
   {
-    "limit_amount": number
+    "limit_amount": "number"
   }
   ```
 - **Success Response**:
