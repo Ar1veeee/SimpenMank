@@ -42,6 +42,12 @@ const UpdateTransaction = async (req, res, type) => {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
+  if (isNaN(amount) || amount < 0) {
+    return res.status(400).json({
+      message: "Amount must be a valid number and cannot be negative",
+    });
+  }
+
   try {
     const [wallet_id, category_id] = await Promise.all([
       getWalletIdByName(wallet_name),
@@ -105,6 +111,12 @@ const handleTransaction = async (req, res, type) => {
 
   if (!transaction_date || !amount || !category_name || !wallet_name) {
     return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  if (isNaN(amount) || amount < 0) {
+    return res.status(400).json({
+      message: "Amount must be a valid number and cannot be negative",
+    });
   }
 
   try {
