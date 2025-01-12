@@ -13,7 +13,7 @@ const validatePassword = (password) => {
 };
 
 const updatePassword = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user.id;
   const { newPassword } = req.body;
 
   const validationError = validatePassword(newPassword);
@@ -36,7 +36,7 @@ const updatePassword = async (req, res) => {
 };
 
 const Profile = async (req, res) => {
-  const { user_id } = req.params;
+  const user_id = req.user.id;
 
   try {
     const user = await findUserById(user_id);
