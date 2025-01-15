@@ -1,5 +1,19 @@
 const { findUserById, updateUserPassword } = require("../models/usersModel");
 
+const handleErrorResponse = (res, error, message) => {
+  console.error(message, error);
+  res.status(500).json({ message });
+};
+
+const validateUser = async (res, user_id) => {
+  const user = await findUserById(user_id);
+  if (!user) {
+    res.status(404).json({ message: "User Not Found" });
+    return null;
+  }
+  return user;
+};
+
 const validatePassword = (password) => {
   if (!password) {
     return "New Password Must Be Filled In";
@@ -15,34 +29,29 @@ const validatePassword = (password) => {
 const updatePassword = async (req, res) => {
   const user_id = req.user.id;
   const { newPassword } = req.body;
-
   const validationError = validatePassword(newPassword);
+  const user = await validateUser(res, user_id);
+
+  if (!user) return;
   if (validationError) {
     return res.status(400).json({ message: validationError });
   }
 
   try {
-    const user = await findUserById(user_id);
-    if (!user) {
-      return res.status(404).json({ message: "User Not Found" });
-    }
-
     await updateUserPassword(user_id, newPassword);
     res.status(200).json({ message: "Password successfully updated" });
   } catch (error) {
-    console.error("Error Fetching Update Password:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    handleErrorResponse(res, error, "Error Updating Password:");
   }
 };
 
 const Profile = async (req, res) => {
   const user_id = req.user.id;
+  const user = await validateUser(res, user_id);
+
+  if (!user) return;
 
   try {
-    const user = await findUserById(user_id);
-    if (!user) {
-      return res.status(404).json({ message: "User Not Found" });
-    }
     res.status(200).json({      
         user_id: user.id,
         username: user.username,
@@ -50,8 +59,7 @@ const Profile = async (req, res) => {
         auth_method: user.auth_method,      
     });
   } catch (error) {
-    console.error("Error Fetching Profile:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    handleErrorResponse(res, error, "Error Fetching Profile:");
   }
 };
 

@@ -33,14 +33,13 @@ const validateUser = async (res, user_id) => {
 const Categories = async (req, res) => {
   const { type } = req.params;
   const user_id = req.user.id;
+  const user = await validateUser(res, user_id);
 
-  if (!user_id || !type) {
-    return res.status(404).json({ message: "User ID and Type Is Required" });
+  if (!user) return;
+  if (!type) {
+    return res.status(404).json({ message: "Type Is Required" });
   }
 
-  const user = await validateUser(res, user_id);
-  if (!user) return;
-  
   try {
     const userCategories = await getUserCategory(user_id, type);
     res.status(200).json({ userCategories });
@@ -52,13 +51,12 @@ const Categories = async (req, res) => {
 const CategoryDetail = async (req, res) => {
   const { category_id } = req.params;
   const user_id = req.user.id;
+  const user = await validateUser(res, user_id);
 
+  if (!user) return;
   if (!category_id) {
     return res.status(404).json({ message: "Category ID Is Required" });
   }
-
-  const user = await validateUser(res, user_id);
-  if (!user) return;
 
   try {
     const result = await getCategoryDetail(user_id, category_id);
@@ -74,11 +72,10 @@ const CategoryDetail = async (req, res) => {
 const IncomeCategory = async (req, res) => {
   const user_id = req.user.id;
   const { category_name } = req.body;
-
-  if (!validateRequestBody(res, category_name, "Category Name")) return;
-
   const user = await validateUser(res, user_id);
+
   if (!user) return;
+  if (!validateRequestBody(res, category_name, "Category Name")) return;
 
   try {
     await addIncomeCategory(user_id, category_name);
@@ -91,11 +88,10 @@ const IncomeCategory = async (req, res) => {
 const ExpenseCategory = async (req, res) => {
   const user_id = req.user.id;
   const { category_name } = req.body;
-
-  if (!validateRequestBody(res, category_name, "Category Name")) return;
-
   const user = await validateUser(res, user_id);
+
   if (!user) return;
+  if (!validateRequestBody(res, category_name, "Category Name")) return;
 
   try {
     await addExpenseCategory(user_id, category_name);
@@ -109,17 +105,15 @@ const UpdateCategory = async (req, res) => {
   const { category_id } = req.params;
   const user_id = req.user.id;
   const { category_name } = req.body;
+  const user = await validateUser(res, user_id);
 
+  if (!user) return;
   if (!category_id) {
     return res
       .status(400)
       .json({ message: "User ID & Category ID is required" });
   }
-
   if (!validateRequestBody(res, category_name, "Category Name")) return;
-
-  const user = await validateUser(res, user_id);
-  if (!user) return;
 
   try {
     await editCategoryName(user_id, category_id, category_name);
@@ -132,15 +126,14 @@ const UpdateCategory = async (req, res) => {
 const DeleteCategory = async (req, res) => {
   const { category_id } = req.params;
   const user_id = req.user.id;
+  const user = await validateUser(res, user_id);
 
+  if (!user) return;
   if (!category_id) {
     return res.status(400).json({ message: "Category ID is required" });
   }
-  
-  const user = await validateUser(res, user_id);
-  if (!user) return;
 
-  try {    
+  try {
     const result = await deleteUserCategory(user_id, category_id);
     if (!result) {
       return res.status(400).json({ message: "Category not found" });

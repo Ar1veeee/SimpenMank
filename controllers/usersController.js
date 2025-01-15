@@ -3,34 +3,10 @@ const { compare } = require("bcrypt");
 const { findUserByEmail, createUser } = require("../models/usersModel");
 const { createDefaultWallets } = require("../models/walletModel");
 const { createDefaultCategory } = require("../models/categoryModel");
-const login = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ message: "Email and password are required" });
-  }
-  try {
-    const user = await findUserByEmail(email);
-    if (!user) {
-      return res.status(404).json({ message: "User Not Found" });
-    }
 
-    const isPasswordValid = await compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(400).json({ message: "Incorrect Password" });
-    }
-
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-    res.json({
-      message: "Login Successfully",
-      user_id: user.id,
-      username: user.username,
-      token,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+const handleErrorResponse = (res, error, message) => {
+  console.error(message, error);
+  res.status(500).json({ message });
 };
 
 const validatePassword = (password) => {
@@ -59,11 +35,45 @@ const validatePassword = (password) => {
   return null;
 };
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+  try {
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "Email Not Found" });
+    }
+
+    const isPasswordValid = await compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid password." });
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    res.json({
+      message: "Login Successfully",
+      user_id: user.id,
+      username: user.username,
+      token,
+    });
+  } catch (error) {
+    handleErrorResponse(res, error, "Error Logging In");
+  }
+};
+
 const register = async (req, res) => {
   const { username, email, password } = req.body;
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailRegex.test(email)) {
-    return res.status(400).json({ message: "Invalid email format" });
+    return res
+      .status(400)
+      .json({
+        message: "Invalid registration data. Please check your inputs.",
+      });
   }
   const passwordError = validatePassword(password);
   if (passwordError) {
@@ -81,7 +91,7 @@ const register = async (req, res) => {
     await createDefaultCategory(result.id);
     res.status(201).json({ message: "Registration Successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    handleErrorResponse(res, error, "Error Registering User");
   }
 };
 

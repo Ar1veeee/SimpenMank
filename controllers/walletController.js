@@ -23,24 +23,11 @@ const validateUser = async (res, user_id) => {
 
 const showWallet = async (req, res) => {
   const user_id = req.user.id;
-
-  if (!user_id) {
-    return res.status(400).json({
-      message: "User ID is required",
-    });
-  }
-
   const user = await validateUser(res, user_id);
+
   if (!user) return;
 
   try {
-    const user = await findUserById(user_id);
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
-
     const wallets = await getUserWallet(user_id);
     res.status(200).json({ wallets });
   } catch (error) {
@@ -51,26 +38,18 @@ const showWallet = async (req, res) => {
 const WalletDetail = async (req, res) => {
   const { wallet_id } = req.params;
   const user_id = req.user.id;
+  const user = await validateUser(res, user_id);
 
+  if (!user) return;
   if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
 
-  const user = await validateUser(res, user_id);
-  if (!user) return;
-
   try {
-    const user = await findUserById(user_id);
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
     const result = await getWalletDetail(user_id, wallet_id);
     if (result && result.balance) {
       result.balance = Number(result.balance);
     }
-
     res.status(200).json(result);
   } catch (error) {
     handleErrorResponse(res, error, "Error Fetching Wallet Detail:");
@@ -80,31 +59,16 @@ const WalletDetail = async (req, res) => {
 const addingWallet = async (req, res) => {
   const user_id = req.user.id;
   const { wallet_name } = req.body;
+  const user = await validateUser(res, user_id);
 
-  if (!user_id) {
-    return res.status(400).json({
-      message: "User ID is required",
-    });
-  }
-
+  if (!user) return;
   if (!wallet_name) {
     return res.status(400).json({
       message: "Missing required fields",
     });
   }
 
-  const user = await validateUser(res, user_id);
-  if (!user) return;
-
   try {
-    const user = await findUserById(user_id);
-
-    if (!user) {
-      return res.status(404).json({
-        message: "User ID not found",
-      });
-    }
-
     await addWallet(user_id, wallet_name);
     res.status(201).json({ message: "Wallet successfully added" });
   } catch (error) {
@@ -115,9 +79,10 @@ const addingWallet = async (req, res) => {
 const UpdateWallet = async (req, res) => {
   const { wallet_id } = req.params;
   const user_id = req.user.id;
-
   const { wallet_name } = req.body;
+  const user = await validateUser(res, user_id);
 
+  if (!user) return;
   if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
@@ -126,16 +91,7 @@ const UpdateWallet = async (req, res) => {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
-  const user = await validateUser(res, user_id);
-  if (!user) return;
-
   try {
-    const user = await findUserById(user_id);
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
     await updateUserWallet(user_id, wallet_id, wallet_name);
     res.status(200).json({ message: "Wallet update successfully" });
   } catch (error) {
@@ -146,26 +102,19 @@ const UpdateWallet = async (req, res) => {
 const DeleteWallet = async (req, res) => {
   const { wallet_id } = req.params;
   const user_id = req.user.id;
+  const user = await validateUser(res, user_id);
 
+  if (!user) return;
   if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
 
-  const user = await validateUser(res, user_id);
-  if (!user) return;
-  
+
   try {
-    const user = await findUserById(user_id);
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
     const result = await deleteUserWallet(user_id, wallet_id);
     if (!result) {
       return res.status(400).json({ message: "Wallet not found" });
     }
-
     res.status(200).json({ message: "Wallet has been successfully deleted" });
   } catch (error) {
     handleErrorResponse(res, error, "Error Deleting Wallet:");
