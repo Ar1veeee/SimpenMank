@@ -10,7 +10,8 @@ const getUserTransactions = async (user_id) => {
       t.amount, 
       c.name AS category_name, 
       w.name AS wallet_name, 
-      t.description
+      t.description,
+      t.type as type
     FROM transactions t
     JOIN categories c ON t.category_id = c.id
     JOIN wallets w ON t.wallet_id = w.id
