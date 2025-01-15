@@ -21,14 +21,26 @@ const limiter = rateLimit({
   max: 100,
 });
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+});
+
 app.use(limiter);
 app.use(cors());
-app.use(helmet.xssFilter());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "trusted-cdn.com"],
+    },
+  })
+);
 app.use(compression());
 app.use(morgan("combined"));
 app.use(express.json());
 
-app.use("/auth", userRoutes);
+app.use("/auth",authLimiter, userRoutes);
 app.use("/profile", profileRoutes);
 app.use("/transaction", transactionRoutes);
 app.use("/wallet", walletRoutes);
