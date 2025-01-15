@@ -40,6 +40,7 @@ const Categories = async (req, res) => {
 
   const user = await validateUser(res, user_id);
   if (!user) return;
+  
   try {
     const userCategories = await getUserCategory(user_id, type);
     res.status(200).json({ userCategories });

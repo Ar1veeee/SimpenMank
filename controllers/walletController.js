@@ -7,13 +7,31 @@ const {
 } = require("../models/walletModel");
 const { findUserById } = require("../models/usersModel");
 
+const handleErrorResponse = (res, error, message) => {
+  console.error(message, error);
+  res.status(500).json({ message });
+};
+
+const validateUser = async (res, user_id) => {
+  const user = await findUserById(user_id);
+  if (!user) {
+    res.status(404).json({ message: "User Not Found" });
+    return null;
+  }
+  return user;
+};
+
 const showWallet = async (req, res) => {
   const user_id = req.user.id;
+
   if (!user_id) {
     return res.status(400).json({
       message: "User ID is required",
     });
   }
+
+  const user = await validateUser(res, user_id);
+  if (!user) return;
 
   try {
     const user = await findUserById(user_id);
@@ -24,12 +42,9 @@ const showWallet = async (req, res) => {
     }
 
     const wallets = await getUserWallet(user_id);
-    res.status(200).json({wallets});
+    res.status(200).json({ wallets });
   } catch (error) {
-    console.error("Error fetching wallets:", error);
-    res.status(500).json({
-      message: "Error fetching wallets",
-    });
+    handleErrorResponse(res, error, "Error Fetching Wallets:");
   }
 };
 
@@ -40,6 +55,10 @@ const WalletDetail = async (req, res) => {
   if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
+
+  const user = await validateUser(res, user_id);
+  if (!user) return;
+
   try {
     const user = await findUserById(user_id);
     if (!user) {
@@ -54,8 +73,7 @@ const WalletDetail = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching wallet detail:", error);
-    res.status(500).json({ message: "Internal server error" });
+    handleErrorResponse(res, error, "Error Fetching Wallet Detail:");
   }
 };
 
@@ -75,6 +93,9 @@ const addingWallet = async (req, res) => {
     });
   }
 
+  const user = await validateUser(res, user_id);
+  if (!user) return;
+
   try {
     const user = await findUserById(user_id);
 
@@ -87,10 +108,7 @@ const addingWallet = async (req, res) => {
     await addWallet(user_id, wallet_name);
     res.status(201).json({ message: "Wallet successfully added" });
   } catch (error) {
-    console.error("Error adding wallet:", error);
-    res.status(500).json({
-      message: "Error adding wallet",
-    });
+    handleErrorResponse(res, error, "Error Adding Wallet:");
   }
 };
 
@@ -108,6 +126,9 @@ const UpdateWallet = async (req, res) => {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
+  const user = await validateUser(res, user_id);
+  if (!user) return;
+
   try {
     const user = await findUserById(user_id);
     if (!user) {
@@ -118,17 +139,21 @@ const UpdateWallet = async (req, res) => {
     await updateUserWallet(user_id, wallet_id, wallet_name);
     res.status(200).json({ message: "Wallet update successfully" });
   } catch (error) {
-    console.error("Error update wallet", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    handleErrorResponse(res, error, "Error Updating Wallet:");
   }
 };
 
 const DeleteWallet = async (req, res) => {
   const { wallet_id } = req.params;
   const user_id = req.user.id;
+
   if (!wallet_id) {
     return res.status(400).json({ message: "Wallet ID is required" });
   }
+
+  const user = await validateUser(res, user_id);
+  if (!user) return;
+  
   try {
     const user = await findUserById(user_id);
     if (!user) {
@@ -143,8 +168,7 @@ const DeleteWallet = async (req, res) => {
 
     res.status(200).json({ message: "Wallet has been successfully deleted" });
   } catch (error) {
-    console.error("Error deleting Wallet:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    handleErrorResponse(res, error, "Error Deleting Wallet:");
   }
 };
 
