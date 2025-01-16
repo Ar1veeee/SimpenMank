@@ -3,18 +3,24 @@ require("dotenv-safe").config();
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
 });
 
-process.on("SIGTERM", () => {
-  server.close(() => {
-    console.log("Process terminated");
+const gracefulShutdown = async (signal) => {
+  console.log(`Received ${signal}, shutting down gracefully...`);
+  server.close(async () => {
+    console.log("HTTP server closed.");
+    try {
+      await db.end();
+      console.log("Database connection pool closed.");
+      process.exit(0);
+    } catch (err) {
+      console.error("Error during database shutdown:", err);
+      process.exit(1);
+    }
   });
-});
+};
 
-process.on("SIGINT", () => {
-  server.close(() => {
-    console.log("Process terminated");
-  });
-});
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
