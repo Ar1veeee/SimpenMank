@@ -25,6 +25,7 @@
     "firebase": "^11.1.0",
     "firebase-admin": "^13.0.2",
     "helmet": "^8.0.0",
+    "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.12.0",

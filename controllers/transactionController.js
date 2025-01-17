@@ -9,6 +9,7 @@ const {
 const { getCategoryIdByName } = require("../models/categoryModel");
 const { getWalletIdByName } = require("../models/walletModel");
 const { findUserById } = require("../models/usersModel");
+const { redisClient } = require("../config/redisClient");
 
 const validateTransactionFields = ({
   transaction_date,
@@ -86,7 +87,9 @@ const Transactions = async (req, res) => {
 
   try {
     const transactions = await getUserTransactions(user_id);
-    res.status(200).json({ transactions });
+    const cacheKey = res.locals.cacheKey;
+    await redisClient.set(cacheKey, JSON.stringify(transactions), "EX", 3600);
+    res.status(200).json(transactions);
   } catch (error) {
     handleErrorResponse(res, error, "Error Fetching Transactions:");
   }
@@ -235,7 +238,9 @@ const MonthlyReports = async (req, res) => {
     if (monthlyTransaction.length === 0) {
       return res.status(404).json({ message: "No transactions found" });
     }
-    res.status(200).json({ monthlyTransaction });
+    const cacheKey = res.locals.cacheKey;
+    await redisClient.set(cacheKey, JSON.stringify(monthlyTransaction), "EX", 3600);
+    res.status(200).json(monthlyTransaction);
   } catch (error) {
     handleErrorResponse(res, error, "Error Fetching Monthly Transactions:");
   }

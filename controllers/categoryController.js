@@ -7,6 +7,8 @@ const {
   deleteUserCategory,
 } = require("../models/categoryModel");
 const { findUserById } = require("../models/usersModel");
+const { redisClient } = require("../config/redisClient");
+
 
 const handleErrorResponse = (res, error, message) => {
   console.error(message, error);
@@ -42,7 +44,9 @@ const Categories = async (req, res) => {
 
   try {
     const userCategories = await getUserCategory(user_id, type);
-    res.status(200).json({ userCategories });
+    const cacheKey = res.locals.cacheKey;
+    await redisClient.set(cacheKey, JSON.stringify(userCategories), "EX", 3600);
+    res.status(200).json(userCategories);
   } catch (error) {
     handleErrorResponse(res, error, "Error Fetching Categories:");
   }

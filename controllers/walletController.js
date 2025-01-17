@@ -6,6 +6,8 @@ const {
   deleteUserWallet,
 } = require("../models/walletModel");
 const { findUserById } = require("../models/usersModel");
+const { redisClient } = require("../config/redisClient");
+
 
 const handleErrorResponse = (res, error, message) => {
   console.error(message, error);
@@ -29,7 +31,9 @@ const showWallet = async (req, res) => {
 
   try {
     const wallets = await getUserWallet(user_id);
-    res.status(200).json({ wallets });
+    const cacheKey = res.locals.cacheKey;
+    await redisClient.set(cacheKey, JSON.stringify(wallets), "EX", 3600);
+    res.status(200).json(wallets);
   } catch (error) {
     handleErrorResponse(res, error, "Error Fetching Wallets:");
   }
