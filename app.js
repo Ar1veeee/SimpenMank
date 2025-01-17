@@ -6,6 +6,7 @@ const walletRoutes = require("./routes/walletRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const transactionRoutes = require("./routes/trasactionsRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");
+const goalRoutes = require("./routes/goalRoutes");
 const firebaseRoutes = require("./routes/firebaseTestRoutes");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -62,6 +63,7 @@ app.use("/transaction", transactionRoutes);
 app.use("/wallet", walletRoutes);
 app.use("/category", categoryRoutes);
 app.use("/budget", budgetRoutes);
+app.use("/goal", goalRoutes);
 app.use("/test", testRoutes);
 app.use("/firebase", firebaseRoutes);
 

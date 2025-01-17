@@ -191,7 +191,7 @@
 - **Method**: `GET`
 - **Success Response**:
   ```json
-  {    
+  {
       {
         "id": "number",
         "user_id": "number",
@@ -263,7 +263,7 @@
 - **Success Response**:
   ```json
   {
-    "message": "Wallet successfully deleted",
+    "message": "Wallet successfully deleted"
   }
   ```
 
@@ -332,12 +332,19 @@
     "description": "string"
   }
   ```
+- **Success Response**:
+  ```json
+  {
+    "message": "Transaction successfully added"
+  }
+  ```
 
 ### Add Expense Transaction
 
 - **Endpoint**: `/transactions/expense`
 - **Method**: `POST`
 - **Request Body**: Same as Income Transaction.
+- **Success Response**: Same as Income Transaction.
 
 ### Update Transaction
 
@@ -347,7 +354,7 @@
 - **Success Response**:
   ```json
   {
-    "message": "Transaction update successfully"
+    "message": "Transaction successfully updated"
   }
   ```
 
@@ -374,7 +381,7 @@
         "total_income": "number",
         "total_expense": "number",
         "net_balance": "number"
-      }    
+      }
   }
   ```
 
@@ -424,18 +431,19 @@
     "category_name": "string"
   }
   ```
-
-### Add Expense Category
-
-- **Endpoint**: `/category/expense`
-- **Method**: `POST`
-- **Request Body**: Same as Income Category.
 - **Success Response**:
   ```json
   {
     "message": "Category added successfully"
   }
   ```
+
+### Add Expense Category
+
+- **Endpoint**: `/category/expense`
+- **Method**: `POST`
+- **Request Body**: Same as Income Category.
+- **Success Response**: Same as Income Category    
 
 ### Edit Category
 
@@ -463,6 +471,8 @@
   {
     "message": "Category successfully deleted"
   }
+  ```
+
 ---
 
 ## Budget Management
@@ -552,6 +562,99 @@
   ```json
   {
     "message": "Limit Amount successfully set"
+  }
+  ```
+
+---
+
+## Goal Management
+
+### Get User Goal
+
+- **Endpoint**: `/goal/`
+- **Method**: `GET`
+- **Success Response**:
+  ```json
+  {
+    {
+      "id": "number",
+      "name": "string",
+      "type": "string"
+    },
+    {
+      "id": "number",
+      "name": "string",
+      "type": "string"
+    }
+  }
+  ```
+
+### Add User Goal
+
+- **Endpoint**: `/goal/`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "goal_name": "string",
+    "target_amount": "number",
+    "current_amount": "numer",
+    "deadline": "date"
+  }
+  ```
+- **Success Response**:
+  ```json
+  {
+    "message": "Goal successfully added"
+  }
+  ```
+
+### Get Goal Detail
+
+- **Endpoint**: `/goal/:goal_id/detail`
+- **Method**: `GET`
+- **Success Response**:
+  ```json
+  {
+    "id": "number",
+    "user_id": "number",
+    "name": "string",
+    "target_amount": "number",
+    "current_amount": "number",
+    "deadline": "date",
+    "status": "string",
+    "created_at": "date"
+  }
+  ```
+
+### Edit User Goal
+
+- **Endpoint**: `/goal/:goal_id`
+- **Method**: `PUT`
+- **Request Body**:
+  ```json
+  {
+    "goal_name": "string",
+    "target_amount": "number",
+    "current_amount": "number",
+    "deadline": "date"
+  }
+  ```
+- **Success Response**:
+  ```json
+  {
+    "message": "Goal successfully updated"
+  }
+  ```
+
+### Delete User Goal
+
+- **Endpoint**: `/goal/:goal_id`
+- **Method**: `DELETE`
+- **Success Response**:
+  ```json
+  {
+    "message": "Goal successfully deleted"
   }
   ```
 
