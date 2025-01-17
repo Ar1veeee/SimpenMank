@@ -191,8 +191,7 @@
 - **Method**: `GET`
 - **Success Response**:
   ```json
-  {
-    "wallets": [
+  {    
       {
         "id": "number",
         "user_id": "number",
@@ -207,13 +206,12 @@
         "balance": "number",
         "created_at": "date"
       }
-    ]
   }
   ```
 
-### Show Wallet Detail
+### Show Wallet Details
 
-- **Endpoint**: `/wallet/:wallet_id`
+- **Endpoint**: `/wallet/:wallet_id/detail`
 - **Method**: `GET`
 - **Success Response**:
   ```json
@@ -258,24 +256,52 @@
   }
   ```
 
+### Delete Wallet
+
+- **Endpoint**: `/wallet/:wallet_id`
+- **Method**: `DELETE`
+- **Success Response**:
+  ```json
+  {
+    "message": "Wallet successfully deleted",
+  }
+  ```
+
 ---
 
 ## Transaction Management
 
-### Get All Transactions
+### Get User Transactions
 
 - **Endpoint**: `/transactions`
 - **Method**: `GET`
 - **Success Response**:
   ```json
   {
-    "transactions": []
+      {
+          "transaction_id": "number",
+          "transaction_date": "string",
+          "amount": "number",
+          "category_name": "string",
+          "wallet_name": "string",
+          "description": "string",
+          "type": "string"
+      },
+      {
+          "transaction_id": "number",
+          "transaction_date": "string",
+          "amount": "number",
+          "category_name": "string",
+          "wallet_name": "string",
+          "description": "string",
+          "type": "string"
+      },
   }
   ```
 
 ### Get Transaction Details
 
-- **Endpoint**: `/transactions/:transaction_id`
+- **Endpoint**: `/transactions/:transaction_id/detail`
 - **Method**: `GET`
 - **Success Response**:
 
@@ -332,7 +358,7 @@
 - **Success Response**:
   ```json
   {
-    "message": "Transaction has been successfully deleted"
+    "message": "Transaction successfully deleted"
   }
   ```
 
@@ -343,14 +369,12 @@
 - **Success Response**:
   ```json
   {
-    "monthlyTransaction": [
       {
         "month": "date",
         "total_income": "number",
         "total_expense": "number",
         "net_balance": "number"
-      }
-    ]
+      }    
   }
   ```
 
@@ -360,30 +384,28 @@
 
 ### Get User Categories
 
-- **Endpoint**: `/categories/:type`
+- **Endpoint**: `/category/:type`
 - **Method**: `GET`
 - **Parameters**: `type`: "income" or "expense"
 - **Success Response**:
   ```json
   {
-    "userCategories": [
-      {
-        "id": "number",
-        "name": "string",
-        "type": "string"
-      },
-      {
-        "id": "number",
-        "name": "string",
-        "type": "string"
-      }
-    ]
+    {
+      "id": "number",
+      "name": "string",
+      "type": "string"
+    },
+    {
+      "id": "number",
+      "name": "string",
+      "type": "string"
+    }
   }
   ```
 
-### Get Category Detail
+### Get Category Details
 
-- **Endpoint**: `/categories/:category_id`
+- **Endpoint**: `/category/:category_id/detail`
 - **Method**: `GET`
 - **Success Response**:
   ```json
@@ -394,7 +416,7 @@
 
 ### Add Income Category
 
-- **Endpoint**: `/categories/income`
+- **Endpoint**: `/category/income`
 - **Method**: `POST`
 - **Request Body**:
   ```json
@@ -405,7 +427,7 @@
 
 ### Add Expense Category
 
-- **Endpoint**: `/categories/expense`
+- **Endpoint**: `/category/expense`
 - **Method**: `POST`
 - **Request Body**: Same as Income Category.
 - **Success Response**:
@@ -417,7 +439,7 @@
 
 ### Edit Category
 
-- **Endpoint**: `/categories/:category_id`
+- **Endpoint**: `/category/:category_id`
 - **Method**: `PATCH`
 - **Request Body**:
   ```json
@@ -432,6 +454,15 @@
   }
   ```
 
+### Delete Category
+
+- **Endpoint**: `/category/:category_id`
+- **Method**: `DELETE`
+- **Success Response**:
+  ```json
+  {
+    "message": "Category successfully deleted"
+  }
 ---
 
 ## Budget Management
