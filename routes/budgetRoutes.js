@@ -19,6 +19,7 @@ router.use(verifyUser);
 router.get("/weekly", getWeeklyBudget);
 router.get("/monthly", getMonthlyBudget);
 router.get("/annually", getAnnuallyBudget);
+
 router.patch("/:category_id", addLimitAmount);
 
 module.exports = router;
