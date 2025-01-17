@@ -23,7 +23,7 @@ const getBudgetByPeriod = async (req, res, period) => {
 
   try {
     const budgets = await budgetList(user_id, period);
-    res.status(200).json({ budgets });
+    res.status(200).json(budgets);
   } catch (error) {
     handleErrorResponse(res, error, "Error Fetching Budgets:");
   }
