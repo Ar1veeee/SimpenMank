@@ -123,7 +123,7 @@ const refreshAccessToken = (req, res) => {
         expiresIn: "15m",
       }
     );
-    res.json({ accessToken: newAccessToken });
+    res.json({ refreshToken: newAccessToken });
   } catch (error) {
     res.status(403).json({ message: "Invalid refresh token" });
   }

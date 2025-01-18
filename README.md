@@ -134,13 +134,25 @@
     "message": "Login Successfully",
     "user_id": "string",
     "username": "string",
-    "token": "jwt_token"
+    "accessToken": "jwt_token"
   }
   ```
 - **Error Response**:
   ```json
   {
     "message": "User Not Found"
+  }
+  ```
+
+### Refresh Token
+
+- **Endpoint**: `/auth/refresh-token`
+- **Method**: `POST`
+- **Success Response**:
+
+  ```json
+  {
+    "refreshToken": "new jwt_token"
   }
   ```
 
@@ -443,7 +455,7 @@
 - **Endpoint**: `/category/expense`
 - **Method**: `POST`
 - **Request Body**: Same as Income Category.
-- **Success Response**: Same as Income Category    
+- **Success Response**: Same as Income Category
 
 ### Edit Category
 

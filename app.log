@@ -22,3 +22,14 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/transaction/\",\"status\":\"200\",\"responseTime\":\"106.259\"}","timestamp":"2025-01-18T08:13:26.406Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/wallet/\",\"status\":\"200\",\"responseTime\":\"7.716\"}","timestamp":"2025-01-18T08:13:39.452Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/auth/refresh-token\",\"status\":\"500\",\"responseTime\":\"2.415\"}","timestamp":"2025-01-18T08:14:26.078Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/auth/refresh-token\",\"status\":\"401\",\"responseTime\":\"4.773\"}","timestamp":"2025-01-18T08:19:02.595Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/auth/login\",\"status\":\"200\",\"responseTime\":\"119.852\"}","timestamp":"2025-01-18T08:19:15.866Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/auth/refresh-token\",\"status\":\"200\",\"responseTime\":\"2.971\"}","timestamp":"2025-01-18T08:19:18.373Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/auth/login\",\"status\":\"200\",\"responseTime\":\"64.203\"}","timestamp":"2025-01-18T08:19:25.034Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/transaction/\",\"status\":\"200\",\"responseTime\":\"5.215\"}","timestamp":"2025-01-18T08:19:28.480Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/transaction/\",\"status\":\"200\",\"responseTime\":\"2.957\"}","timestamp":"2025-01-18T08:19:30.132Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/transaction/\",\"status\":\"200\",\"responseTime\":\"3.596\"}","timestamp":"2025-01-18T08:19:36.105Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/wallet/\",\"status\":\"200\",\"responseTime\":\"4.189\"}","timestamp":"2025-01-18T08:19:52.222Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/auth/login\",\"status\":\"200\",\"responseTime\":\"113.417\"}","timestamp":"2025-01-18T08:26:51.246Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/auth/refresh-token\",\"status\":\"200\",\"responseTime\":\"3.897\"}","timestamp":"2025-01-18T08:26:57.814Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/transaction/\",\"status\":\"200\",\"responseTime\":\"6.361\"}","timestamp":"2025-01-18T08:28:16.632Z"}
