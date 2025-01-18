@@ -8,9 +8,9 @@ const transactionRoutes = require("./routes/trasactionsRoutes");
 const budgetRoutes = require("./routes/budgetRoutes");
 const goalRoutes = require("./routes/goalRoutes");
 const firebaseRoutes = require("./routes/firebaseTestRoutes");
-const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const cookieParser = require("cookie-parser");
 const compression = require("compression");
 const morgan = require("morgan");
 const logger = require("./middlewares/logger")
@@ -30,7 +30,6 @@ const authLimiter = rateLimit({
 const morganFormat = ":method :url :status :response-time ms";
 
 app.use(limiter);
-app.use(cors());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -40,6 +39,7 @@ app.use(
   })
 );
 app.use(compression());
+app.use(cookieParser());
 app.use(
   morgan(morganFormat, {
     stream: {

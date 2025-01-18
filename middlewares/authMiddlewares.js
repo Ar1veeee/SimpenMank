@@ -1,15 +1,13 @@
 const jwt = require("jsonwebtoken");
 require("dotenv-safe").config();
 
-const authMiddleware = (req, res, next) => {
+const accessToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res
-      .status(401)
-      .json({
-        message: "Akses ditolak, token tidak disediakan atau format salah",
-      });
+    return res.status(401).json({
+      message: "Akses ditolak, token tidak disediakan atau format salah",
+    });
   }
 
   const token = authHeader.split(" ")[1];
@@ -28,4 +26,4 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+module.exports = accessToken;
