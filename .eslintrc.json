@@ -1,0 +1,33 @@
+{
+    "env": {
+        "node": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "airbnb-base"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "globals": {
+        "process": "readonly",
+        "connection": "readonly"
+    },
+    "rules": {
+        "no-console": "off",
+        "indent": [
+            "error",
+            2
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
+}

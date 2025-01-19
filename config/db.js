@@ -3,6 +3,7 @@ require("dotenv-safe").config();
 
 console.log("Initializing database connection pool...");
 
+/* eslint-disable no-undef */
 const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,

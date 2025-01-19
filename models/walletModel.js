@@ -1,5 +1,6 @@
 const db = require("../config/db");
 
+/* eslint-disable no-undef */
 const getUserWallet = async (user_id) => {
   try {
     const [rows] = await db.query("SELECT * FROM wallets WHERE user_id = ?", [

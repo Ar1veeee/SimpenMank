@@ -29,6 +29,7 @@ const firebaseAuth = async (req, res) => {
 
     const user = await findOrCreateUser(profile);
 
+    /* eslint-disable no-undef */
     const backendToken = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET,

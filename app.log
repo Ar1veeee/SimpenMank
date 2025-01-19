@@ -34,3 +34,4 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/auth/refresh-token\",\"status\":\"200\",\"responseTime\":\"3.897\"}","timestamp":"2025-01-18T08:26:57.814Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/transaction/\",\"status\":\"200\",\"responseTime\":\"6.361\"}","timestamp":"2025-01-18T08:28:16.632Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/health/db\",\"status\":\"200\",\"responseTime\":\"32.558\"}","timestamp":"2025-01-19T00:40:44.550Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/auth/login\",\"status\":\"200\",\"responseTime\":\"184.676\"}","timestamp":"2025-01-19T01:06:06.163Z"}

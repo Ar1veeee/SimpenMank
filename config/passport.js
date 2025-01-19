@@ -3,6 +3,7 @@ const passport = require("passport");
 const { findOrCreateUser, findUserById } = require("../models/usersModel");
 require("dotenv-safe").config();
 
+/* eslint-disable no-undef */
 const { WEB_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } =
   process.env;
 

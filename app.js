@@ -69,7 +69,7 @@ app.use("/goal", goalRoutes);
 app.use("/health", testRoutes);
 app.use("/firebase", firebaseRoutes);
 
-app.use((err, req, res, next) => {
+app.use((err, res) => {
   console.error(err.stack);
   res.status(500).json({ message: "Internal Server Error" });
 });

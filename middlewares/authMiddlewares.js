@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv-safe").config();
 
+/* eslint-disable no-undef */
 const accessToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
 
@@ -23,6 +24,7 @@ const accessToken = (req, res, next) => {
     next();
   } catch (error) {
     res.status(401).json({ message: "Token tidak valid" });
+    console.error(error);
   }
 };
 

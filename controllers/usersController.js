@@ -63,6 +63,7 @@ const register = async (req, res) => {
   }
 };
 
+/* eslint-disable no-undef */
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -126,6 +127,7 @@ const refreshAccessToken = (req, res) => {
     res.json({ refreshToken: newAccessToken });
   } catch (error) {
     res.status(403).json({ message: "Invalid refresh token" });
+    console.error(error);
   }
 };
 

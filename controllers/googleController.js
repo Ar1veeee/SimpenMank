@@ -12,6 +12,7 @@ const googleLogin = passport.authenticate("google", {
   scope: ["profile", "email"],
 });
 
+/* eslint-disable no-undef */
 const googleCallback = (req, res, next) => {
   passport.authenticate(
     "google",

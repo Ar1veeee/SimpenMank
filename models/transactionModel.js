@@ -30,7 +30,9 @@ const getUserTransactions = async (user_id) => {
           })
         : null,
      }));
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const getMonthlyReport = async (user_id) => {

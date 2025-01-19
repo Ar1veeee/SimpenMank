@@ -1,4 +1,3 @@
-const { use } = require("passport");
 const {
   getUserGoals,
   getGoalDetails,

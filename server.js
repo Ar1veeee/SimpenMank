@@ -1,6 +1,6 @@
 const app = require("./app");
 require("dotenv-safe").config();
-
+/* eslint-disable no-undef */
 const PORT = process.env.PORT || 3000;
 
 const server = app.listen(PORT, () => {
