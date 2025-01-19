@@ -12,6 +12,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
+const hpp = require("hpp");
 const morgan = require("morgan");
 const logger = require("./middlewares/logger")
 require("./config/passport");
@@ -40,6 +41,7 @@ app.use(
 );
 app.use(compression());
 app.use(cookieParser());
+app.use(hpp());
 app.use(
   morgan(morganFormat, {
     stream: {
@@ -64,7 +66,7 @@ app.use("/wallet", walletRoutes);
 app.use("/category", categoryRoutes);
 app.use("/budget", budgetRoutes);
 app.use("/goal", goalRoutes);
-app.use("/test", testRoutes);
+app.use("/health", testRoutes);
 app.use("/firebase", firebaseRoutes);
 
 app.use((err, req, res, next) => {

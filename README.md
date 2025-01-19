@@ -674,26 +674,27 @@
 
 ## System Health
 
-### Test API
+### API HEALTH CHECK
 
-- **Endpoint**: `/test`
+- **Endpoint**: `/health/api`
 - **Method**: `GET`
 - **Success Response**:
   ```json
   {
     "message": "API is working",
-    "timestamp": "ISO_string"
+    "timestamp": "localeDateString",
+    "responseTime": "responseTime"
   }
   ```
 
-### Test Database
+### DATABASE HEALTH CHECK
 
-- **Endpoint**: `/test/db`
+- **Endpoint**: `/health/db`
 - **Method**: `GET`
 - **Success Response**:
   ```json
   {
-    "message": "Database connection successful"
+    "message": "Connected to Database"
   }
   ```
 - **Error Response**:

@@ -1,9 +1,16 @@
 const db = require("../config/db");
 
 exports.testAPI = (req, res) => {
+  const startTime = Date.now();
+
   res.status(200).json({
     message: "API is working",
-    timestamp: new Date().toISOString(),
+    timestamp: new Date().toLocaleDateString("id-ID", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }),
+    responseTime: `${Date.now() - startTime}ms`,
   });
 };
 
